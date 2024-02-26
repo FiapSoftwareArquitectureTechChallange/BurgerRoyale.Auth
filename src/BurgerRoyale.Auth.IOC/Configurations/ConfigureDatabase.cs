@@ -30,5 +30,17 @@ namespace BurgerRoyale.Auth.IOC.Configurations
 						  });
 				});
 		}
-	}
+
+        public static void RunMigrations(WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+
+            var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            if (dbContext is not null && !dbContext.Database.CanConnect())
+            {
+                dbContext.Database.Migrate();
+            }
+        }
+    }
 }
