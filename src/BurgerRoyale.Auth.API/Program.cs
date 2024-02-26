@@ -37,6 +37,8 @@ builder.Services.AddSwaggerGen(options =>
 	options.EnableAnnotations();
 });
 
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
 DependencyInjectionConfiguration.Register(builder.Services, builder.Configuration);
 
 var app = builder.Build();
