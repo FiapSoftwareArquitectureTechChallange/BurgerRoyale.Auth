@@ -19,5 +19,13 @@ namespace BurgerRoyale.Auth.Domain.Entities
             PasswordHash = passwordHash;
             UserType = userType;
         }
+
+        public void SetDetails(string name, string email, string passwordHash, UserType userType)
+        {
+            Name = name;
+            Email = email;
+            PasswordHash = passwordHash;
+            UserType = userType;
+        }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using BurgerRoyale.Auth.Domain.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
 namespace BurgerRoyale.Auth.API.Middleware
 {
-	public class ExceptionMiddleware
+    public class ExceptionMiddleware
 	{
 		private readonly RequestDelegate _next;
 
@@ -49,7 +50,9 @@ namespace BurgerRoyale.Auth.API.Middleware
 
 		private HttpStatusCode MapHttpStatusCode(Exception exception) => exception switch
 		{
-			_ => HttpStatusCode.InternalServerError
+            var e when e is DomainException => HttpStatusCode.BadRequest,
+            var e when e is NotFoundException => HttpStatusCode.NotFound,
+            _ => HttpStatusCode.InternalServerError
 		};
 	}
 }
