@@ -1,5 +1,6 @@
 ﻿using BurgerRoyale.Auth.Domain.Enumerators;
 using BurgerRoyale.Auth.Domain.Helpers;
+using BurgerRoyale.Auth.Domain.Validators;
 
 namespace BurgerRoyale.Auth.Domain.Entities
 {
@@ -18,6 +19,8 @@ namespace BurgerRoyale.Auth.Domain.Entities
             Email = email;
             PasswordHash = passwordHash;
             UserRole = userRole;
+
+            ValidateEntity();
         }
 
         public void SetDetails(string name, string email, string passwordHash, UserRole userRole)
@@ -26,6 +29,13 @@ namespace BurgerRoyale.Auth.Domain.Entities
             Email = email;
             PasswordHash = passwordHash;
             UserRole = userRole;
+
+            ValidateEntity();
+        }
+
+        private void ValidateEntity()
+        {
+            new UserValidator().Validate(this);
         }
     }
 }
