@@ -26,7 +26,6 @@ namespace BurgerRoyale.Auth.API.Middleware
             }
         }
 
-        [ExcludeFromCodeCoverage]
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json; charset=utf-8";

@@ -2,12 +2,12 @@
 
 namespace BurgerRoyale.Auth.Domain.DTO
 {
-    public class RequestUserDTO
-    {
-        public string Cpf { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public UserType UserType { get; set; }
-    }
+    public record RequestUserDTO
+    (
+        string Cpf,
+        string Name,
+        string Email,
+        string Password,
+        UserType UserType
+    );
 }
