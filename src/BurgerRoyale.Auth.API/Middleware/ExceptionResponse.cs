@@ -7,7 +7,7 @@
 /// <param name="TraceId">Request TraceId</param>
 public record ErrorResponse
 (
-	string? ErrorMessage,
+    string? ErrorMessage,
 
-	string? TraceId
+    string? TraceId
 );

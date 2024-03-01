@@ -3,22 +3,22 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BurgerRoyale.Auth.IOC.Configurations
 {
-	[ExcludeFromCodeCoverage]
-	public static class ConfigureServices
-	{
-		public static void Register
-		(
-			IServiceCollection services
-		)
-		{
-			#region Services
+    [ExcludeFromCodeCoverage]
+    public static class ConfigureServices
+    {
+        public static void Register
+        (
+            IServiceCollection services
+        )
+        {
+            #region Services
 
-			#endregion Services
+            #endregion Services
 
-			#region Repositories
+            #region Repositories
 
 
-			#endregion Repositories
-		}
-	}
+            #endregion Repositories
+        }
+    }
 }

@@ -5,18 +5,18 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BurgerRoyale.Auth.IOC
 {
-	[ExcludeFromCodeCoverage]
-	public static class DependencyInjectionConfiguration
-	{
-		public static void Register
-		(
-			IServiceCollection services,
-			IConfiguration configuration
-		)
-		{
-			ConfigureDatabase.Register(services, configuration);
-			ConfigureHealthChecks.Register(services);
-			ConfigureServices.Register(services);
-		}
-	}
+    [ExcludeFromCodeCoverage]
+    public static class DependencyInjectionConfiguration
+    {
+        public static void Register
+        (
+            IServiceCollection services,
+            IConfiguration configuration
+        )
+        {
+            ConfigureDatabase.Register(services, configuration);
+            ConfigureHealthChecks.Register(services);
+            ConfigureServices.Register(services);
+        }
+    }
 }

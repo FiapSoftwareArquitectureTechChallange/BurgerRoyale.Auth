@@ -19,22 +19,22 @@ ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("en-US");
 
 builder.Services.AddSwaggerGen(options =>
 {
-	options.SwaggerDoc("v1", new OpenApiInfo
-	{
-		Title = "BurgerRoyale.Auth",
-		Version = "v1"
-	});
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "BurgerRoyale.Auth",
+        Version = "v1"
+    });
 
-	options.IncludeXmlComments
-	(
-		Path.Combine
-		(
-			AppContext.BaseDirectory,
-			$"{Assembly.GetExecutingAssembly().GetName().Name}.xml"
-		)
-	);
+    options.IncludeXmlComments
+    (
+        Path.Combine
+        (
+            AppContext.BaseDirectory,
+            $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"
+        )
+    );
 
-	options.EnableAnnotations();
+    options.EnableAnnotations();
 });
 
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
@@ -46,8 +46,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();

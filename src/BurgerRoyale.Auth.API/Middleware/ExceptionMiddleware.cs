@@ -6,53 +6,53 @@ using System.Text.Json;
 namespace BurgerRoyale.Auth.API.Middleware
 {
     public class ExceptionMiddleware
-	{
-		private readonly RequestDelegate _next;
+    {
+        private readonly RequestDelegate _next;
 
-		public ExceptionMiddleware(RequestDelegate next)
-		{
-			_next = next;
-		}
+        public ExceptionMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
 
-		public async Task Invoke(HttpContext context)
-		{
-			try
-			{
-				await _next.Invoke(context);
-			}
-			catch (Exception exception)
-			{
-				await HandleExceptionAsync(context, exception);
-			}
-		}
+        public async Task Invoke(HttpContext context)
+        {
+            try
+            {
+                await _next.Invoke(context);
+            }
+            catch (Exception exception)
+            {
+                await HandleExceptionAsync(context, exception);
+            }
+        }
 
-		[ExcludeFromCodeCoverage]
-		private async Task HandleExceptionAsync(HttpContext context, Exception exception)
-		{
-			context.Response.ContentType = "application/json; charset=utf-8";
+        [ExcludeFromCodeCoverage]
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            context.Response.ContentType = "application/json; charset=utf-8";
 
-			var statusCode = MapHttpStatusCode(exception);
+            var statusCode = MapHttpStatusCode(exception);
 
-			context.Response.StatusCode = (int)statusCode;
+            context.Response.StatusCode = (int)statusCode;
 
-			var response = GetErrorResponse(context, exception);
+            var response = GetErrorResponse(context, exception);
 
-			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-		}
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
 
-		private ErrorResponse GetErrorResponse(HttpContext context, Exception exception)
-		{
-			return new ErrorResponse(
-				exception.Message,
-				context.TraceIdentifier
-			);
-		}
+        private ErrorResponse GetErrorResponse(HttpContext context, Exception exception)
+        {
+            return new ErrorResponse(
+                exception.Message,
+                context.TraceIdentifier
+            );
+        }
 
-		private HttpStatusCode MapHttpStatusCode(Exception exception) => exception switch
-		{
+        private HttpStatusCode MapHttpStatusCode(Exception exception) => exception switch
+        {
             var e when e is DomainException => HttpStatusCode.BadRequest,
             var e when e is NotFoundException => HttpStatusCode.NotFound,
             _ => HttpStatusCode.InternalServerError
-		};
-	}
+        };
+    }
 }
