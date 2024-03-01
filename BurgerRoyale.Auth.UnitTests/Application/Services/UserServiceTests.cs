@@ -35,10 +35,11 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("CPF não encontrado");
+                .WithMessage("Usuário não encontrado");
         }
 
         [Theory]
+        [InlineData(UserRole.Admin, "Admin")]
         [InlineData(UserRole.Customer, "Cliente")]
         [InlineData(UserRole.Employee, "Funcionário")]
         public async Task GivenGetByCpfRequest_WhenUserExists_ThenShouldReturnUserDto
@@ -324,6 +325,45 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 x => x.GetAllAsync(),
                 Times.Never
             );
+        }
+
+        [Fact]
+        public async Task GivenGetByEmailRequest_WhenUserDoesNotExist_ThenShouldThrowNotFoundException()
+        {
+            // arrange
+            var email = "fake@email.com";
+
+            // act
+            Func<Task> task = async () => await _service.GetByEmailAsync(email);
+
+            // assert
+            await task.Should()
+                .ThrowAsync<NotFoundException>()
+                .WithMessage("Usuário não encontrado");
+        }
+
+        [Fact]
+        public async Task GivenGetByEmailRequest_WhenUserExists_ThenShouldReturnUserDto()
+        {
+            // arrange
+            var mockedUser = UserMock.Get();
+
+            _userRepository
+                .Setup(r => r.FindFirstDefaultAsync(
+                    It.IsAny<Expression<Func<User, bool>>>()
+                ))
+                .ReturnsAsync(mockedUser);
+
+            // act
+            var response = await _service.GetByEmailAsync(mockedUser.Email);
+
+            // assert
+            response.Should().BeOfType<UserDTO>();
+
+            response.Cpf.Should().Be(Format.FormatCpf(mockedUser.Cpf));
+            response.Name.Should().Be(mockedUser.Name);
+            response.Email.Should().Be(mockedUser.Email);
+            response.UserType.Should().Be(mockedUser.UserRole);
         }
     }
 }

@@ -24,12 +24,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             User? userEntity = await _userRepository.FindFirstDefaultAsync(x => x.Cpf == cpf);
 
-            if (userEntity is null)
-            {
-                throw new NotFoundException("CPF não encontrado");
-            }
-
-            return new UserDTO(userEntity);
+            return GetUser(userEntity);
         }
 
         public async Task<UserDTO> CreateAsync(RequestUserDTO model)
@@ -97,12 +92,7 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             User? user = await _userRepository.FindFirstDefaultAsync(x => x.Id == userId);
 
-            if (user is null)
-            {
-                throw new NotFoundException("Usuário não encontrado");
-            }
-
-            return new UserDTO(user);
+            return GetUser(user);
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersAsync(UserRole? userType)
@@ -112,6 +102,23 @@ namespace BurgerRoyale.Auth.Application.Services
                 : await _userRepository.FindAsync(x => x.UserRole == userType);
 
             return users.Select(user => new UserDTO(user));
+        }
+
+        public async Task<UserDTO> GetByEmailAsync(string email)
+        {
+            User? user = await _userRepository.FindFirstDefaultAsync(x => x.Email == email);
+
+            return GetUser(user);
+        }
+
+        private static UserDTO GetUser(User? user)
+        {
+            if (user is null)
+            {
+                throw new NotFoundException("Usuário não encontrado");
+            }
+
+            return new UserDTO(user);
         }
     }
 }
