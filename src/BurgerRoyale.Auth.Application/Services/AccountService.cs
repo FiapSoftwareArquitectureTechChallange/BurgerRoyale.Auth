@@ -76,7 +76,7 @@ namespace BurgerRoyale.Auth.Application.Services
             var securityToken = new JwtSecurityToken
             (
                 _jwtConfiguration.Issuer,
-                null,
+                _jwtConfiguration.Audience,
                 claims,
                 expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: credentials

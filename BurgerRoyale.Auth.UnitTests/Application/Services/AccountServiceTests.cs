@@ -26,6 +26,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .Returns(new JwtConfiguration()
                 {
                     Issuer = "issuer",
+                    Audience = "audience",
                     SecretKey = "secret_key_0123456789_9876543210"
                 });
 

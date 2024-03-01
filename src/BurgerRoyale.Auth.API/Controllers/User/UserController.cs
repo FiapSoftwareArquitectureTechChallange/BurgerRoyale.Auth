@@ -1,6 +1,7 @@
 ﻿using BurgerRoyale.Auth.Domain.DTO;
 using BurgerRoyale.Auth.Domain.Enumerators;
 using BurgerRoyale.Auth.Domain.Interface.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -9,6 +10,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
