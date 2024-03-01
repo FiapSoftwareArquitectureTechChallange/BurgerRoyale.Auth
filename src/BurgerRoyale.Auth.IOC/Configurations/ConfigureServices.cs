@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BurgerRoyale.Auth.Application.Services;
+using BurgerRoyale.Auth.Domain.Interface.Repositories;
+using BurgerRoyale.Auth.Domain.Interface.Services;
+using BurgerRoyale.Auth.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BurgerRoyale.Auth.IOC.Configurations
@@ -13,10 +17,13 @@ namespace BurgerRoyale.Auth.IOC.Configurations
         {
             #region Services
 
+            services.AddScoped<IUserService, UserService>();
+
             #endregion Services
 
             #region Repositories
 
+            services.AddScoped<IUserRepository, UserRepository>();
 
             #endregion Repositories
         }
