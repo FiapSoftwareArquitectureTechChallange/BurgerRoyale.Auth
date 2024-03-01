@@ -6,7 +6,7 @@ namespace BurgerRoyale.Auth.IOC.Configurations
 {
     public static class ConfigureSecurity
     {
-        public static void RegisterBindings
+        public static void Register
         (
             IServiceCollection services,
             IConfiguration configuration

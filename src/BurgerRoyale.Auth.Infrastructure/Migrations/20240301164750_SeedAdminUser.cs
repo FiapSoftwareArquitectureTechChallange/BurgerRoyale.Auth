@@ -20,7 +20,7 @@ namespace BurgerRoyale.Auth.Infrastructure.Migrations
                 columns: new[] { "Id", "Cpf", "Name", "Email", "PasswordHash", "UserRole", "CreatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("7D562D53-763B-4A64-887D-8E07C153E13D"), "00000000000", "Admin", "admin@burgerroyale.com", "", 0, DateTime.UtcNow }
+                    { new Guid("7D562D53-763B-4A64-887D-8E07C153E13D"), "00000000000", "Admin", "admin@burgerroyale.com", "$2a$11$Hm3GUkwCnSTCFwqT1ntowe/C/rvm2lery.SP3tUVe0.qdMyknR5PG", 0, DateTime.UtcNow }
                 });
         }
 

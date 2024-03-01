@@ -51,6 +51,7 @@ namespace BurgerRoyale.Auth.API.Middleware
         {
             var e when e is DomainException => HttpStatusCode.BadRequest,
             var e when e is NotFoundException => HttpStatusCode.NotFound,
+            var e when e is UnauthorizedAccessException => HttpStatusCode.Unauthorized,
             _ => HttpStatusCode.InternalServerError
         };
     }
