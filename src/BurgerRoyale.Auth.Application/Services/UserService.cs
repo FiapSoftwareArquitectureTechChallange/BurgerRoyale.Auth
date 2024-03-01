@@ -104,13 +104,6 @@ namespace BurgerRoyale.Auth.Application.Services
             return users.Select(user => new UserDTO(user));
         }
 
-        public async Task<UserDTO> GetByEmailAsync(string email)
-        {
-            User? user = await _userRepository.FindFirstDefaultAsync(x => x.Email == email);
-
-            return GetUser(user);
-        }
-
         private static UserDTO GetUser(User? user)
         {
             if (user is null)

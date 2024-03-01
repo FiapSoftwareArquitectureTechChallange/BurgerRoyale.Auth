@@ -15,8 +15,6 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
 
         Task<UserDTO> GetByCpfAsync(string cpf);
 
-        Task<UserDTO> GetByEmailAsync(string email);
-
         Task<UserDTO> UpdateAsync(Guid userId, RequestUserDTO model);
     }
 }

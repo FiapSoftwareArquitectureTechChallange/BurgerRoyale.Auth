@@ -18,6 +18,7 @@ namespace BurgerRoyale.Auth.IOC.Configurations
             #region Services
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             #endregion Services
 
