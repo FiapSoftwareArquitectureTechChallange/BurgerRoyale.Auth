@@ -9,23 +9,23 @@ namespace BurgerRoyale.Auth.Domain.Entities
         public string Name { get; private set; }
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
-        public virtual UserType UserType { get; private set; }
+        public virtual UserRole UserRole { get; private set; }
 
-        public User(string cpf, string name, string email, string passwordHash, UserType userType)
+        public User(string cpf, string name, string email, string passwordHash, UserRole userRole)
         {
             Cpf = Format.NormalizeCpf(cpf);
             Name = name;
             Email = email;
             PasswordHash = passwordHash;
-            UserType = userType;
+            UserRole = userRole;
         }
 
-        public void SetDetails(string name, string email, string passwordHash, UserType userType)
+        public void SetDetails(string name, string email, string passwordHash, UserRole userRole)
         {
             Name = name;
             Email = email;
             PasswordHash = passwordHash;
-            UserType = userType;
+            UserRole = userRole;
         }
     }
 }

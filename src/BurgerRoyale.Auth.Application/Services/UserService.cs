@@ -45,8 +45,8 @@ namespace BurgerRoyale.Auth.Application.Services
 
             var user = new User(
                 cpf,
-                model.Email,
                 model.Name,
+                model.Email,                
                 BC.HashPassword(model.Password),
                 model.UserType
             );
@@ -105,11 +105,11 @@ namespace BurgerRoyale.Auth.Application.Services
             return new UserDTO(user);
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsersAsync(UserType? userType)
+        public async Task<IEnumerable<UserDTO>> GetUsersAsync(UserRole? userType)
         {
             var users = (userType == null)
                 ? await _userRepository.GetAllAsync()
-                : await _userRepository.FindAsync(x => x.UserType == userType);
+                : await _userRepository.FindAsync(x => x.UserRole == userType);
 
             return users.Select(user => new UserDTO(user));
         }

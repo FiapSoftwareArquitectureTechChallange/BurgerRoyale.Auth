@@ -14,30 +14,30 @@ namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
             string? name = null,
             string? email = null,
             string? password = null,
-            UserType? userType = null
+            UserRole? userRole = null
         )
         {
-            return UserFakerInstantiator(cpf, name, email, password, userType)
+            return UserFakerInstantiator(cpf, name, email, password, userRole)
                 .Generate();
         }
 
         public static List<User> GetList
         (
             int? quantity = null,
-            UserType? userType = null
+            UserRole? userRole = null
         )
         {
-            return UserFakerInstantiator(userType: userType)
+            return UserFakerInstantiator(userRole: userRole)
                 .Generate(quantity ?? 3);
         }
 
         public static List<UserDTO> GetDtoList
         (
             int? quantity = null,
-            UserType? userType = null
+            UserRole? userRole = null
         )
         {
-            return GetList(quantity, userType)
+            return GetList(quantity, userRole)
                 .Select(user => new UserDTO(user))
                 .ToList();
         }
@@ -48,7 +48,7 @@ namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
             string? name = null,
             string? email = null,
             string? password = null,
-            UserType? userType = null
+            UserRole? userRole = null
         )
         {
             return new Faker<User>()
@@ -57,7 +57,7 @@ namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
                     name ?? faker.Person.FullName,
                     email ?? faker.Person.Email,
                     password ?? faker.Internet.Password(),
-                    userType ?? faker.PickRandom<UserType>()
+                    userRole ?? faker.PickRandom<UserRole>()
                 ));
         }
     }

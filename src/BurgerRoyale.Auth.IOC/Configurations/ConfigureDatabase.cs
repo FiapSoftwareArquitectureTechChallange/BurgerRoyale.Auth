@@ -37,7 +37,7 @@ namespace BurgerRoyale.Auth.IOC.Configurations
 
             var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-            if (dbContext is not null && !dbContext.Database.CanConnect())
+            if (dbContext is not null)
             {
                 dbContext.Database.Migrate();
             }

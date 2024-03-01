@@ -21,9 +21,9 @@ public class UserControllerTests
     }
 
     [Theory]
-    [InlineData(UserType.Employee)]
-    [InlineData(UserType.Customer)]
-    public async Task GivenUserType_WhenGetUsers_ThenShouldReturnUsersDtoList(UserType userType)
+    [InlineData(UserRole.Employee)]
+    [InlineData(UserRole.Customer)]
+    public async Task GivenUserType_WhenGetUsers_ThenShouldReturnUsersDtoList(UserRole userType)
     {
         // arrange
         var usersList = UserMock.GetDtoList(3, userType);
@@ -72,7 +72,7 @@ public class UserControllerTests
             user.Name,
             user.Email,
             user.PasswordHash,
-            user.UserType
+            user.UserRole
         );
 
         var userDto = new UserDTO(user);
@@ -101,7 +101,7 @@ public class UserControllerTests
             user.Name,
             user.Email,
             user.PasswordHash,
-            user.UserType
+            user.UserRole
         );
 
         var userDto = new UserDTO(user);

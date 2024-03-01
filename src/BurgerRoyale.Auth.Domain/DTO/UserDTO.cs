@@ -10,7 +10,7 @@ namespace BurgerRoyale.Auth.Domain.DTO
         public string Cpf { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public UserType UserType { get; set; }
+        public UserRole UserType { get; set; }
 
         public string UserTypeDescription
         {
@@ -23,7 +23,7 @@ namespace BurgerRoyale.Auth.Domain.DTO
             Cpf = Format.FormatCpf(user.Cpf);
             Name = user.Name;
             Email = user.Email;
-            UserType = user.UserType;
+            UserType = user.UserRole;
         }
     }
 }

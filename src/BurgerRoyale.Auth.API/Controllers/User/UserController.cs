@@ -22,7 +22,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
         [SwaggerOperation(Summary = "Get a list of users", Description = "Retrieves a list of users based on the specified type.")]
         [ProducesResponseType(typeof(IEnumerable<UserDTO>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetUsers([FromQuery] UserType? userType)
+        public async Task<IActionResult> GetUsers([FromQuery] UserRole? userType)
         {
             var users = await _userService.GetUsersAsync(userType);
             return Ok(users);

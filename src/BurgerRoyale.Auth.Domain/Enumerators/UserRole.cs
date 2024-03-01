@@ -2,8 +2,11 @@
 
 namespace BurgerRoyale.Auth.Domain.Enumerators
 {
-    public enum UserType
+    public enum UserRole
     {
+        [Description("Admin")]
+        Admin = 0,
+
         [Description("Cliente")]
         Customer = 1,
 

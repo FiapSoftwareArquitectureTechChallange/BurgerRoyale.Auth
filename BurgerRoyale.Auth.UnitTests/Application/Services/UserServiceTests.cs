@@ -39,18 +39,18 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Theory]
-        [InlineData(UserType.Customer, "Cliente")]
-        [InlineData(UserType.Employee, "Funcionário")]
+        [InlineData(UserRole.Customer, "Cliente")]
+        [InlineData(UserRole.Employee, "Funcionário")]
         public async Task GivenGetByCpfRequest_WhenUserExists_ThenShouldReturnUserDto
         (
-            UserType userType,
+            UserRole userType,
             string userTypeDescription
         )
         {
             // arrange
             var cpf = "123.456.789-10";
 
-            var mockedUser = UserMock.Get(cpf, userType: userType);
+            var mockedUser = UserMock.Get(cpf, userRole: userType);
 
             _userRepository
                 .Setup(r => r.FindFirstDefaultAsync(
@@ -77,7 +77,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Name",
                 "email",
                 "password",
-                UserType.Customer
+                UserRole.Customer
             );
 
             _userRepository
@@ -103,7 +103,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Test Name",
                 "test@email.com",
                 "password",
-                UserType.Customer
+                UserRole.Customer
             );
 
             // act
@@ -131,7 +131,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Name",
                 "email",
                 "password",
-                UserType.Customer
+                UserRole.Customer
             );
 
             // act
@@ -153,14 +153,14 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Updated Name",
                 "updated@email.com",
                 "password",
-                UserType.Customer
+                UserRole.Customer
             );
 
             var mockedUser = UserMock.Get(
                 request.Cpf,
                 "Initial Name",
                 "old@email.com",
-                userType: UserType.Customer
+                userRole: UserRole.Customer
             );
 
             _userRepository
@@ -261,7 +261,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             response.Cpf.Should().Be(Format.FormatCpf(mockedUser.Cpf));
             response.Name.Should().Be(mockedUser.Name);
             response.Email.Should().Be(mockedUser.Email);
-            response.UserType.Should().Be(mockedUser.UserType);
+            response.UserType.Should().Be(mockedUser.UserRole);
         }
 
         [Fact]
@@ -293,11 +293,11 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Theory]
-        [InlineData(UserType.Customer)]
-        [InlineData(UserType.Employee)]
+        [InlineData(UserRole.Customer)]
+        [InlineData(UserRole.Employee)]
         public async Task GivenGetUsersRequest_WhenUserTypeIsInformed_ThenShouldGetUsersByUserTypeAndReturnList
         (
-            UserType userType
+            UserRole userType
         )
         {
             // arrange
