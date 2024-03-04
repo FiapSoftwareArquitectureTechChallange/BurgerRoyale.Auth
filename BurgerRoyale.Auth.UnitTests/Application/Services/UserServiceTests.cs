@@ -227,13 +227,13 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task GivenGetByIdRequest_WhenUserDoesNotExist_ThenShouldThrowNotFoundException()
+        public async Task GivenGetDtoByIdRequest_WhenUserDoesNotExist_ThenShouldThrowNotFoundException()
         {
             // arrange
             var userId = Guid.NewGuid();
 
             // act
-            Func<Task> task = async () => await _service.GetByIdAsync(userId);
+            Func<Task> task = async () => await _service.GetDtoByIdAsync(userId);
 
             // assert
             await task.Should()
@@ -242,7 +242,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task GivenGetByIdRequest_WhenUserExists_ThenShouldReturnUserDto()
+        public async Task GivenGetDtoByIdRequest_WhenUserExists_ThenShouldReturnUserDto()
         {
             // arrange
             var mockedUser = UserMock.Get();
@@ -254,7 +254,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(mockedUser);
 
             // act
-            var response = await _service.GetByIdAsync(mockedUser.Id);
+            var response = await _service.GetDtoByIdAsync(mockedUser.Id);
 
             // assert
             response.Should().BeOfType<UserDTO>();
@@ -276,7 +276,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(mockedUsers);
 
             // act
-            var response = await _service.GetUsersAsync(null);
+            var response = await _service.GetUsersDtoAsync(null);
 
             // assert
             response.Should().BeAssignableTo<IEnumerable<UserDTO>>();
@@ -296,7 +296,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         [Theory]
         [InlineData(UserRole.Customer)]
         [InlineData(UserRole.Employee)]
-        public async Task GivenGetUsersRequest_WhenUserTypeIsInformed_ThenShouldGetUsersByUserTypeAndReturnList
+        public async Task GivenGetUsersDtoRequest_WhenUserTypeIsInformed_ThenShouldGetUsersByUserTypeAndReturnList
         (
             UserRole userType
         )
@@ -309,7 +309,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(mockedUsers);
 
             // act
-            var response = await _service.GetUsersAsync(userType);
+            var response = await _service.GetUsersDtoAsync(userType);
 
             // assert
             response.Should().BeAssignableTo<IEnumerable<UserDTO>>();

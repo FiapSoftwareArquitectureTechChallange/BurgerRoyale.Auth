@@ -88,14 +88,14 @@ namespace BurgerRoyale.Auth.Application.Services
             _userRepository.Remove(user);
         }
 
-        public async Task<UserDTO> GetByIdAsync(Guid userId)
+        public async Task<UserDTO> GetDtoByIdAsync(Guid userId)
         {
             User? user = await _userRepository.FindFirstDefaultAsync(x => x.Id == userId);
 
             return GetUser(user);
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsersAsync(UserRole? userType)
+        public async Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userType)
         {
             var users = (userType == null)
                 ? await _userRepository.GetAllAsync()

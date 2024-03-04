@@ -23,13 +23,13 @@ public class UserControllerTests
     [Theory]
     [InlineData(UserRole.Employee)]
     [InlineData(UserRole.Customer)]
-    public async Task GivenUserType_WhenGetUsers_ThenShouldReturnUsersDtoList(UserRole userType)
+    public async Task GivenUserType_WhenGetUsersDto_ThenShouldReturnUsersDtoList(UserRole userType)
     {
         // arrange
         var usersList = UserMock.GetDtoList(3, userType);
 
         _userService
-            .Setup(x => x.GetUsersAsync(userType))
+            .Setup(x => x.GetUsersDtoAsync(userType))
             .ReturnsAsync(usersList);
 
         // act
@@ -42,14 +42,14 @@ public class UserControllerTests
     }
 
     [Fact]
-    public async Task GivenUserId_WhenGetUser_ThenShouldReturnUserDto()
+    public async Task GivenUserId_WhenGetUserDto_ThenShouldReturnUserDto()
     {
         // arrange
         var user = UserMock.Get();
         var userDto = user.AsDto();
 
         _userService
-            .Setup(x => x.GetByIdAsync(user.Id))
+            .Setup(x => x.GetDtoByIdAsync(user.Id))
             .ReturnsAsync(userDto);
 
         // act

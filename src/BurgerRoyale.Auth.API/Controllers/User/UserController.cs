@@ -26,7 +26,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetUsers([FromQuery] UserRole? userType)
         {
-            var users = await _userService.GetUsersAsync(userType);
+            var users = await _userService.GetUsersDtoAsync(userType);
             return Ok(users);
         }
 
@@ -37,7 +37,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetUser([FromRoute] Guid id)
         {
-            var user = await _userService.GetByIdAsync(id);
+            var user = await _userService.GetDtoByIdAsync(id);
             return Ok(user);
         }
 
