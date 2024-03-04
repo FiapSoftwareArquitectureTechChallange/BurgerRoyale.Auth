@@ -46,7 +46,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreateUser([FromBody] RequestUserDTO user)
+        public async Task<IActionResult> CreateUser([FromBody] UserCreateRequestDTO user)
         {
             var createdUser = await _userService.CreateAsync(user);
 
@@ -60,7 +60,7 @@ namespace BurgerRoyale.Auth.API.Controllers.User
         [ProducesDefaultResponseType]
         public async Task<IActionResult> UpdateUser(
             [FromRoute] Guid id,
-            [FromBody] RequestUserDTO user
+            [FromBody] UserUpdateRequestDTO user
         )
         {
             var updatedUser = await _userService.UpdateAsync(id, user);

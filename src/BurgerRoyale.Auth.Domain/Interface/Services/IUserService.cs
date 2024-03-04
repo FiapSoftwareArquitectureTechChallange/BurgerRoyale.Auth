@@ -10,7 +10,7 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
 
         Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userType);
 
-        Task<UserDTO> CreateAsync(RequestUserDTO model);
+        Task<UserDTO> CreateAsync(UserCreateRequestDTO model);
 
         Task DeleteAsync(Guid userId);
 
@@ -18,6 +18,6 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
 
         Task<User> GetByEmailAsync(string email);
 
-        Task<UserDTO> UpdateAsync(Guid userId, RequestUserDTO model);
+        Task<UserDTO> UpdateAsync(Guid userId, UserUpdateRequestDTO model);
     }
 }

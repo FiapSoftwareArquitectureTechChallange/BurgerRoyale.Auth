@@ -2,7 +2,7 @@
 
 namespace BurgerRoyale.Auth.Domain.DTO
 {
-    public record RequestUserDTO
+    public record UserCreateRequestDTO
     (
         string Cpf,
         string Name,

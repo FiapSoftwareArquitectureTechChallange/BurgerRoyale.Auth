@@ -33,7 +33,7 @@ namespace BurgerRoyale.Auth.Application.Services
             return user;
         }
 
-        public async Task<UserDTO> CreateAsync(RequestUserDTO model)
+        public async Task<UserDTO> CreateAsync(UserCreateRequestDTO model)
         {
             var cpf = Format.NormalizeCpf(model.Cpf);
 
@@ -57,13 +57,9 @@ namespace BurgerRoyale.Auth.Application.Services
             return user.AsDto();
         }
 
-        public async Task<UserDTO> UpdateAsync(Guid userId, RequestUserDTO model)
+        public async Task<UserDTO> UpdateAsync(Guid userId, UserUpdateRequestDTO model)
         {
-            var cpf = Format.NormalizeCpf(model.Cpf);
-
-            User? user = await _userRepository.FindFirstDefaultAsync(x =>
-                x.Id == userId && x.Cpf == cpf
-            );
+            User? user = await _userRepository.GetByIdAsync(userId);
 
             if (user is null)
             {

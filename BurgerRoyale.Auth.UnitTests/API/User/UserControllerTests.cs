@@ -67,7 +67,7 @@ public class UserControllerTests
         // arrange
         var user = UserMock.Get();
 
-        var requestUser = new RequestUserDTO(
+        var requestUser = new UserCreateRequestDTO(
             user.Cpf,
             user.Name,
             user.Email,
@@ -96,8 +96,7 @@ public class UserControllerTests
         // arrange
         var user = UserMock.Get();
 
-        var requestUser = new RequestUserDTO(
-            user.Cpf,
+        var requestUser = new UserUpdateRequestDTO(
             user.Name,
             user.Email,
             user.PasswordHash,

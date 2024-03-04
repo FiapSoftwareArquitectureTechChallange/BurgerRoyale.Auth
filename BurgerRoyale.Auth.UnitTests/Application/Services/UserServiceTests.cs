@@ -99,7 +99,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         public async Task GivenCreateRequest_WhenUserAlreadyExists_ThenShouldThrowDomainException()
         {
             // arrange
-            var request = new RequestUserDTO
+            var request = new UserCreateRequestDTO
             (
                 "123.456.789-10",
                 "Name",
@@ -125,7 +125,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         public async Task GivenCreateRequest_WhenUserDoesNotExist_ThenShouldCreateUser()
         {
             // arrange
-            var request = new RequestUserDTO
+            var request = new UserCreateRequestDTO
             (
                 "123.456.789-10",
                 "Test Name",
@@ -153,9 +153,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         {
             // arrange
             var userId = Guid.NewGuid();
-            var request = new RequestUserDTO
+            var request = new UserUpdateRequestDTO
             (
-                "123.456.789-10",
                 "Name",
                 "email",
                 "password",
@@ -175,9 +174,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         public async Task GivenUpdateRequest_WhenUserExists_ThenShouldUpdateUser()
         {
             // arrange
-            var request = new RequestUserDTO
+            var request = new UserUpdateRequestDTO
             (
-                "123.456.789-10",
                 "Updated Name",
                 "updated@email.com",
                 "password",
@@ -185,15 +183,14 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             );
 
             var mockedUser = UserMock.Get(
-                request.Cpf,
                 "Initial Name",
                 "old@email.com",
                 userRole: UserRole.Customer
             );
 
             _userRepository
-                .Setup(r => r.FindFirstDefaultAsync(
-                    It.IsAny<Expression<Func<User, bool>>>()
+                .Setup(r => r.GetByIdAsync(
+                    It.IsAny<Guid>()
                 ))
                 .ReturnsAsync(mockedUser);
 
@@ -209,7 +206,6 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
 
             response.Should().BeOfType<UserDTO>();
 
-            response.Cpf.Should().Be(request.Cpf);
             response.Name.Should().Be(request.Name);
             response.Email.Should().Be(request.Email);
             response.UserType.Should().Be(request.UserType);
