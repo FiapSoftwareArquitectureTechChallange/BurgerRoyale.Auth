@@ -90,7 +90,7 @@ namespace BurgerRoyale.Auth.Application.Services
             _userRepository.Remove(user);
         }
 
-        public async Task<UserDTO> GetDtoByIdAsync(Guid userId)
+        public async Task<User> GetByIdAsync(Guid userId)
         {
             User? user = await _userRepository.FindFirstDefaultAsync(x => x.Id == userId);
 
@@ -98,6 +98,13 @@ namespace BurgerRoyale.Auth.Application.Services
             {
                 throw new NotFoundException("Usuário não encontrado");
             }
+
+            return user;
+        }
+
+        public async Task<UserDTO> GetDtoByIdAsync(Guid userId)
+        {
+            User user = await GetByIdAsync(userId);
 
             return user.AsDto();
         }

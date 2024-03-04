@@ -3,6 +3,7 @@ using Bogus.Extensions.Brazil;
 using BurgerRoyale.Auth.Domain.DTO;
 using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Enumerators;
+using BC = BCrypt.Net.BCrypt;
 
 namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
 {
@@ -56,7 +57,7 @@ namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
                     cpf ?? faker.Person.Cpf(),
                     name ?? faker.Person.FullName,
                     email ?? faker.Person.Email,
-                    password ?? faker.Internet.Password(),
+                    BC.HashPassword(password ?? faker.Internet.Password()),
                     userRole ?? faker.PickRandom<UserRole>()
                 ));
         }

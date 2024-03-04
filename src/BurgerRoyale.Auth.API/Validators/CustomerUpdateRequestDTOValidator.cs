@@ -1,20 +1,14 @@
 ﻿using BurgerRoyale.Auth.Domain.DTO;
-using BurgerRoyale.Auth.Domain.Helpers;
 using FluentValidation;
 
 namespace BurgerRoyale.Auth.API.Validators
 {
-    public class UserRegisterRequestDTOValidator : AbstractValidator<CustomerRequestDTO>
+    public class CustomerUpdateRequestDTOValidator : AbstractValidator<CustomerUpdateRequestDTO>
     {
-        public UserRegisterRequestDTOValidator()
+        public CustomerUpdateRequestDTOValidator()
         {
             When(w => w is not null, () =>
             {
-                RuleFor(r => r.Cpf)                    
-                    .NotEmpty()
-                    .Must(x => CpfHelper.IsValid(x))
-                    .WithMessage("Informe um CPF válido");
-
                 RuleFor(r => r.Name)
                    .NotEmpty()
                    .WithMessage("Informe um nome");
@@ -24,13 +18,17 @@ namespace BurgerRoyale.Auth.API.Validators
                     .EmailAddress()
                     .WithMessage("Informe um email válido");
 
-                RuleFor(r => r.Password)
+                RuleFor(r => r.CurrentPassword)
                     .NotEmpty()
-                    .WithMessage("Informe uma senha");
+                    .WithMessage("Informe a senha atual");
 
-                RuleFor(r => r.PasswordConfirmation)
+                RuleFor(r => r.NewPassword)
                     .NotEmpty()
-                    .Equal(x => x.Password)
+                    .WithMessage("Informe a nova senha");
+
+                RuleFor(r => r.NewPasswordConfirmation)
+                    .NotEmpty()
+                    .Equal(x => x.NewPassword)
                     .WithMessage("Confirmação de senha incorreta");
             });
         }

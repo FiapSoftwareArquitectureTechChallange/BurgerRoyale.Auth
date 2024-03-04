@@ -7,10 +7,10 @@ namespace BurgerRoyale.Auth.Domain.Enumerators
         [Description("Admin")]
         Admin = 0,
 
-        [Description("Cliente")]
+        [Description("Customer")]
         Customer = 1,
 
-        [Description("Funcionário")]
+        [Description("Employee")]
         Employee = 2
     }
 }

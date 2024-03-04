@@ -6,6 +6,8 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
     {
         Task<AuthenticationResponseDTO> Authenticate(AuthenticationRequestDTO request);
 
-        Task<UserDTO> RegisterCustomer (UserRegisterRequestDTO request);
+        Task<UserDTO> RegisterCustomerAsync (CustomerRequestDTO request);
+
+        Task<UserDTO> UpdateCustomerAsync(Guid userId, CustomerUpdateRequestDTO request);
     }
 }

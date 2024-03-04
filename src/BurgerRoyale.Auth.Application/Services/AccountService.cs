@@ -53,7 +53,7 @@ namespace BurgerRoyale.Auth.Application.Services
             }
         }
 
-        public async Task<UserDTO> RegisterCustomer(UserRegisterRequestDTO request)
+        public async Task<UserDTO> RegisterCustomerAsync(CustomerRequestDTO request)
         {
             if (request.Password != request.PasswordConfirmation)
             {
@@ -67,6 +67,31 @@ namespace BurgerRoyale.Auth.Application.Services
                     request.Email,
                     request.Password,
                     UserRole.Customer
+                )
+            );
+        }
+
+        public async Task<UserDTO> UpdateCustomerAsync(Guid userId, CustomerUpdateRequestDTO request)
+        {
+            if (request.NewPassword != request.NewPasswordConfirmation)
+            {
+                throw new DomainException("Senhas não correspondem");
+            }
+
+            var user = await _userService.GetByIdAsync(userId);
+
+            if (!BC.Verify(request.CurrentPassword, user.PasswordHash))
+            {
+                throw new UnauthorizedAccessException("Senha atual incorreta");
+            }
+
+            return await _userService.UpdateAsync(
+                userId,
+                new UserUpdateRequestDTO(
+                    request.Name,
+                    request.Email,
+                    request.NewPassword,
+                    user.UserRole
                 )
             );
         }

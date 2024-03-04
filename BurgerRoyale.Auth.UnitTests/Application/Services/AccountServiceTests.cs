@@ -1,13 +1,11 @@
 ﻿using BurgerRoyale.Auth.Application.Services;
 using BurgerRoyale.Auth.Domain.Configurations;
 using BurgerRoyale.Auth.Domain.DTO;
-using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Enumerators;
 using BurgerRoyale.Auth.Domain.Exceptions;
 using BurgerRoyale.Auth.Domain.Interface.Services;
 using BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks;
 using Microsoft.Extensions.Options;
-using BC = BCrypt.Net.BCrypt;
 
 namespace BurgerRoyale.Auth.UnitTests.Application.Services
 {
@@ -70,11 +68,11 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // arrange
             var cpf = "12345678910";
 
-            var user = new User(
+            var user = UserMock.Get(
                 cpf,
                 "Name",
                 "email@test.com",
-                BC.HashPassword("password"),
+                "password",
                 UserRole.Admin
             );
 
@@ -108,11 +106,11 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // arrange
             var password = "password";
 
-            var user = new User(
+            var user = UserMock.Get(
                 "12345678910",
                 "Name",
                 "email@test.com",
-                BC.HashPassword(password),
+                password,
                 UserRole.Admin
             );
 
@@ -142,7 +140,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         public async Task GivenUserRegisterRequest_WhenPasswordDoesNotMatchWithConfirmation_ThenShouldThrowDomainException()
         {
             // arrange
-            var request = new UserRegisterRequestDTO(
+            var request = new CustomerRequestDTO(
                 "12345678910",
                 "Name",
                 "email@test.com",
@@ -151,7 +149,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             );
 
             // act
-            Func<Task> task = async () => await _accountService.RegisterCustomer(request);
+            Func<Task> task = async () => await _accountService.RegisterCustomerAsync(request);
 
             // assert
             await task.Should()
@@ -163,7 +161,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         public async Task GivenUserRegisterRequest_WhenCreateUser_ThenShouldCreateAsCustomer()
         {
             // arrange
-            var request = new UserRegisterRequestDTO(
+            var request = new CustomerRequestDTO(
                 "12345678910",
                 "Name",
                 "email@test.com",
@@ -184,7 +182,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(userDto);
 
             // act
-            var response = await _accountService.RegisterCustomer(request);
+            var response = await _accountService.RegisterCustomerAsync(request);
 
             // assert
             response.Should().BeEquivalentTo(userDto);
@@ -195,6 +193,101 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                         It.Is<UserCreateRequestDTO>(y => 
                             y.Cpf == request.Cpf
                             && y.UserRole == UserRole.Customer
+                        )
+                    ),
+                    Times.Once
+                );
+        }
+
+        [Fact]
+        public async Task GivenUpdateCustomerRequest_WhenPasswordDoesNotMatchWithConfirmation_ThenShouldThrowDomainException()
+        {
+            // arrange
+            var request = new CustomerUpdateRequestDTO(
+                "Name",
+                "email@test.com",
+                "12345678910",
+                "password",
+                "wrong_password_confirmation"
+            );
+
+            // act
+            Func<Task> task = async () => await _accountService.UpdateCustomerAsync(Guid.NewGuid(), request);
+
+            // assert
+            await task.Should()
+                .ThrowAsync<DomainException>()
+                .WithMessage("Senhas não correspondem");
+        }
+
+        [Fact]
+        public async Task GivenUpdateCustomerRequest_WhenCurrentPasswordDoesNotMatch_ThenShouldThrowUnauthorizedException()
+        {
+            // arrange
+            var request = new CustomerUpdateRequestDTO(
+                "Name",
+                "email@test.com",
+                "current_password",
+                "password",
+                "password"
+            );
+
+            var user = UserMock.Get(password: "another_password");
+
+            _userService
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(user);
+
+            // act
+            Func<Task> task = async () => await _accountService.UpdateCustomerAsync(Guid.NewGuid(), request);
+
+            // assert
+            await task.Should()
+                .ThrowAsync<UnauthorizedAccessException>()
+                .WithMessage("Senha atual incorreta");
+        }
+
+        [Fact]
+        public async Task GivenUpdateCustomerRequest_WhenUserUpdated_ThenShouldReturnDto()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+            var currentPassword = "current_password";
+
+            var request = new CustomerUpdateRequestDTO(
+                "Name",
+                "email@test.com",
+                currentPassword,
+                "password",
+                "password"
+            );
+
+            var user = UserMock.Get(password: currentPassword);
+
+            _userService
+                .Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(user);
+
+            _userService
+                .Setup(x => x.UpdateAsync(
+                    It.IsAny<Guid>(),
+                    It.IsAny<UserUpdateRequestDTO>()))
+                .ReturnsAsync(user.AsDto());
+
+            // act
+            var response = await _accountService.UpdateCustomerAsync(userId, request);
+
+            // assert
+            response.Should().BeOfType<UserDTO>();
+
+            _userService
+                .Verify(
+                    x => x.UpdateAsync(
+                        userId,
+                        It.Is<UserUpdateRequestDTO>(y =>
+                            y.Name == request.Name
+                            && y.Email == request.Email
+                            && y.Password == request.NewPassword
                         )
                     ),
                     Times.Once

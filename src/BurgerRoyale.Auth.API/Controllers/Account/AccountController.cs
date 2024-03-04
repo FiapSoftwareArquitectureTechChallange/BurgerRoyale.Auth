@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
-namespace BurgerRoyale.Auth.API.Controllers.AccountController
+namespace BurgerRoyale.Auth.API.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -35,10 +34,26 @@ namespace BurgerRoyale.Auth.API.Controllers.AccountController
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> RegisterCustomer([FromBody] UserRegisterRequestDTO request)
+        public async Task<IActionResult> RegisterCustomer([FromBody] CustomerRequestDTO request)
         {
-            var response = await _accountService.RegisterCustomer(request);
+            var response = await _accountService.RegisterCustomerAsync(request);
             return StatusCode((int) HttpStatusCode.Created, response);
+        }
+
+        [Authorize(Roles = "Customer")]
+        [HttpPut("Update/{id:Guid}")]        
+        [SwaggerOperation(Summary = "Uptade customer user", Description = "Update customer user")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> UpdateCustomer
+        (
+            [FromRoute] Guid id,
+            [FromBody] CustomerUpdateRequestDTO request
+        )
+        {
+            var response = await _accountService.UpdateCustomerAsync(id, request);
+            return Ok(response);
         }
     }
 }

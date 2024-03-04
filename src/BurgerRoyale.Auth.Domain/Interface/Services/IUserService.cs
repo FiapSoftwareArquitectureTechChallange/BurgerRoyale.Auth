@@ -6,6 +6,8 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
 {
     public interface IUserService
     {
+        Task<User> GetByIdAsync(Guid userId);
+
         Task<UserDTO> GetDtoByIdAsync(Guid userId);
 
         Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userRole);
