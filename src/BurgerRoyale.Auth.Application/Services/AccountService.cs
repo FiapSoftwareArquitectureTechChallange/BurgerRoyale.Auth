@@ -2,7 +2,6 @@
 using BurgerRoyale.Auth.Domain.DTO;
 using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Helpers;
-using BurgerRoyale.Auth.Domain.Interface.Repositories;
 using BurgerRoyale.Auth.Domain.Interface.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,16 +14,16 @@ namespace BurgerRoyale.Auth.Application.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly JwtConfiguration _jwtConfiguration;
 
         public AccountService
         (
-            IUserRepository userRepository,
+            IUserService userService,
             IOptions<JwtConfiguration> jwtConfiguration
         )
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _jwtConfiguration = jwtConfiguration.Value;
         }
 
@@ -32,11 +31,11 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             try
             {
-                User user = await _userRepository.FindFirstDefaultAsync(x =>
-                    x.Cpf == request.Cpf || x.Email == request.Email
-                );
+                User user = !string.IsNullOrWhiteSpace(request.Cpf)
+                    ? await _userService.GetByCpfAsync(request.Cpf)
+                    : await _userService.GetByEmailAsync(request.Email ?? string.Empty);
 
-                if ( user == null || !BC.Verify(request.Password, user.PasswordHash))
+                if (!BC.Verify(request.Password, user.PasswordHash))
                 {
                     throw new UnauthorizedAccessException("Credenciais incorretas");
                 }

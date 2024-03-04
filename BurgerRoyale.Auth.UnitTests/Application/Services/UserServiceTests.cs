@@ -38,20 +38,13 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .WithMessage("Usuário não encontrado");
         }
 
-        [Theory]
-        [InlineData(UserRole.Admin, "Admin")]
-        [InlineData(UserRole.Customer, "Cliente")]
-        [InlineData(UserRole.Employee, "Funcionário")]
-        public async Task GivenGetByCpfRequest_WhenUserExists_ThenShouldReturnUserDto
-        (
-            UserRole userType,
-            string userTypeDescription
-        )
+        [Fact]
+        public async Task GivenGetByCpfRequest_WhenUserExists_ThenShouldReturnUser()
         {
             // arrange
             var cpf = "123.456.789-10";
 
-            var mockedUser = UserMock.Get(cpf, userRole: userType);
+            var mockedUser = UserMock.Get(cpf: cpf);
 
             _userRepository
                 .Setup(r => r.FindFirstDefaultAsync(
@@ -63,9 +56,43 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             var response = await _service.GetByCpfAsync(cpf);
 
             // assert
-            response.Should().BeOfType<UserDTO>();
-            response.Cpf.Should().Be(cpf);
-            response.UserTypeDescription.Should().Be(userTypeDescription);
+            response.Should().BeEquivalentTo(mockedUser);;
+        }
+
+        [Fact]
+        public async Task GivenGetByEmailRequest_WhenUserDoesNotExists_ThenShouldThrowNotFoundException()
+        {
+            // arrange
+            var email = "test@email.com";
+
+            // act
+            Func<Task> task = async () => await _service.GetByEmailAsync(email);
+
+            // assert
+            await task.Should()
+                .ThrowAsync<NotFoundException>()
+                .WithMessage("Usuário não encontrado");
+        }
+
+        [Fact]
+        public async Task GivenGetByEmailRequest_WhenUserExists_ThenShouldReturnUser()
+        {
+            // arrange
+            var email = "test@email.com";
+
+            var mockedUser = UserMock.Get(email: email);
+
+            _userRepository
+                .Setup(r => r.FindFirstDefaultAsync(
+                    x => x.Email == email.Trim()
+                ))
+                .ReturnsAsync(mockedUser);
+
+            // act
+            var response = await _service.GetByEmailAsync(email);
+
+            // assert
+            response.Should().BeEquivalentTo(mockedUser); ;
         }
 
         [Fact]

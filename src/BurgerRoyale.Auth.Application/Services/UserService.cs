@@ -18,13 +18,19 @@ namespace BurgerRoyale.Auth.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<UserDTO> GetByCpfAsync(string cpf)
+
+        public async Task<User> GetByCpfAsync(string cpf)
         {
             cpf = Format.NormalizeCpf(cpf);
 
-            User? userEntity = await _userRepository.FindFirstDefaultAsync(x => x.Cpf == cpf);
+            User? user = await _userRepository.FindFirstDefaultAsync(x => x.Cpf == cpf);
 
-            return GetUser(userEntity);
+            if (user is null)
+            {
+                throw new NotFoundException("Usuário não encontrado");
+            }
+
+            return user;
         }
 
         public async Task<UserDTO> CreateAsync(RequestUserDTO model)
@@ -92,7 +98,12 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             User? user = await _userRepository.FindFirstDefaultAsync(x => x.Id == userId);
 
-            return GetUser(user);
+            if (user is null)
+            {
+                throw new NotFoundException("Usuário não encontrado");
+            }
+
+            return user.AsDto();
         }
 
         public async Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userType)
@@ -104,14 +115,16 @@ namespace BurgerRoyale.Auth.Application.Services
             return users.Select(user => user.AsDto());
         }
 
-        private static UserDTO GetUser(User? user)
+        public async Task<User> GetByEmailAsync(string email)
         {
+            User? user = await _userRepository.FindFirstDefaultAsync(x => x.Email == email.Trim());
+
             if (user is null)
             {
                 throw new NotFoundException("Usuário não encontrado");
             }
 
-            return user.AsDto();
+            return user;
         }
     }
 }

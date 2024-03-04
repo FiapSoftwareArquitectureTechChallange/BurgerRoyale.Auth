@@ -3,22 +3,22 @@ using BurgerRoyale.Auth.Domain.Configurations;
 using BurgerRoyale.Auth.Domain.DTO;
 using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Enumerators;
-using BurgerRoyale.Auth.Domain.Interface.Repositories;
+using BurgerRoyale.Auth.Domain.Exceptions;
+using BurgerRoyale.Auth.Domain.Interface.Services;
 using Microsoft.Extensions.Options;
-using System.Linq.Expressions;
 using BC = BCrypt.Net.BCrypt;
 
 namespace BurgerRoyale.Auth.UnitTests.Application.Services
 {
     public class AccountServiceTests
     {
-        private readonly Mock<IUserRepository> _userRepository;
+        private readonly Mock<IUserService> _userService;
         private readonly Mock<IOptions<JwtConfiguration>> _jwtConfiguration;
         private readonly AccountService _accountService;
 
         public AccountServiceTests()
         {
-            _userRepository = new Mock<IUserRepository>();
+            _userService = new Mock<IUserService>();
             _jwtConfiguration = new Mock<IOptions<JwtConfiguration>>();
 
             _jwtConfiguration
@@ -30,20 +30,29 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                     SecretKey = "secret_key_0123456789_9876543210"
                 });
 
-            _accountService = new AccountService(_userRepository.Object, _jwtConfiguration.Object);
+            _accountService = new AccountService(_userService.Object, _jwtConfiguration.Object);
         }
 
-        [Fact]
-        public async Task GivenAuthenticateRequest_WhenUserDoesNotExists_ThenShouldThrowUnauthorizedException()
+        [Theory]
+        [InlineData("12345678910", null)]
+        [InlineData(null, "email@test.com")]
+        [InlineData(null, null)]
+        public async Task GivenAuthenticateRequest_WhenUserDoesNotExists_ThenShouldThrowUnauthorizedException(string? cpf, string? email)
         {
             // arrange
-            var cpf = "12345678910";
-
             var request = new AuthenticationRequestDTO(
                 cpf,
-                null,
+                email,
                 "password"
             );
+
+            _userService
+                .Setup(x => x.GetByCpfAsync(It.IsAny<string>()))
+                .ThrowsAsync(new NotFoundException());
+
+            _userService
+                .Setup(x => x.GetByEmailAsync(It.IsAny<string>()))
+                .ThrowsAsync(new NotFoundException());
 
             // act
             Func<Task> task = async () => await _accountService.Authenticate(request);
@@ -74,9 +83,9 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "incorrect_password"
             );
 
-            _userRepository
-                .Setup(x => x.FindFirstDefaultAsync(
-                    It.IsAny<Expression<Func<User, bool>>>()
+            _userService
+                .Setup(x => x.GetByCpfAsync(
+                    It.IsAny<string>()
                 ))
                 .ReturnsAsync(user);
 
@@ -89,15 +98,17 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .WithMessage("Usuário não autorizado");
         }
 
-        [Fact]
-        public async Task GivenAuthenticateRequest_WhenUserCredentialsAreCorrect_ThenShouldReturnTokenAndUserInResponse()
+        [Theory]
+        [InlineData("12345678910", null)]
+        [InlineData(null, "email@test.com")]
+        [InlineData(null, null)]
+        public async Task GivenAuthenticateRequest_WhenUserCredentialsAreCorrect_ThenShouldReturnTokenAndUserInResponse(string? cpf, string? email)
         {
             // arrange
-            var cpf = "12345678910";
             var password = "password";
 
             var user = new User(
-                cpf,
+                "12345678910",
                 "Name",
                 "email@test.com",
                 BC.HashPassword(password),
@@ -106,14 +117,16 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
 
             var request = new AuthenticationRequestDTO(
                 cpf,
-                null,
+                email,
                 password
             );
 
-            _userRepository
-                .Setup(x => x.FindFirstDefaultAsync(
-                    It.IsAny<Expression<Func<User, bool>>>()
-                ))
+            _userService
+                .Setup(x => x.GetByCpfAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            _userService
+                .Setup(x => x.GetByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
 
             // act

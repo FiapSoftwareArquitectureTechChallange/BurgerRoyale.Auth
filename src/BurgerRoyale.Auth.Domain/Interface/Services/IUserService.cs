@@ -1,4 +1,5 @@
 ﻿using BurgerRoyale.Auth.Domain.DTO;
+using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Enumerators;
 
 namespace BurgerRoyale.Auth.Domain.Interface.Services
@@ -13,7 +14,9 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
 
         Task DeleteAsync(Guid userId);
 
-        Task<UserDTO> GetByCpfAsync(string cpf);
+        Task<User> GetByCpfAsync(string cpf);
+
+        Task<User> GetByEmailAsync(string email);
 
         Task<UserDTO> UpdateAsync(Guid userId, RequestUserDTO model);
     }
