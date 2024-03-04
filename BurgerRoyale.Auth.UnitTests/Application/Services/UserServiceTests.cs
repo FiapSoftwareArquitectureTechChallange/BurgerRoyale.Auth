@@ -35,7 +35,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("Usuário não encontrado");
+                .WithMessage("User not found");
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("Usuário não encontrado");
+                .WithMessage("User not found");
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<DomainException>()
-                .WithMessage("CPF já cadastrado");
+                .WithMessage("CPF already registered");
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("Usuário não encontrado");
+                .WithMessage("User not found");
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("Usuário não encontrado");
+                .WithMessage("User not found");
         }
 
         [Fact]
@@ -261,7 +261,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<NotFoundException>()
-                .WithMessage("Usuário não encontrado");
+                .WithMessage("User not found");
         }
 
         [Fact]

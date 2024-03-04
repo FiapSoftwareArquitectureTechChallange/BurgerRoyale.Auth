@@ -27,7 +27,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (user is null)
             {
-                throw new NotFoundException("Usuário não encontrado");
+                throw new NotFoundException("User not found");
             }
 
             return user;
@@ -41,7 +41,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (userAlreadyExists)
             {
-                throw new DomainException("CPF já cadastrado");
+                throw new DomainException("CPF already registered");
             }
 
             var user = new User(
@@ -63,7 +63,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (user is null)
             {
-                throw new NotFoundException("Usuário não encontrado");
+                throw new NotFoundException("User not found");
             }
 
             user.SetDetails(
@@ -84,7 +84,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (user is null)
             {
-                throw new NotFoundException("Usuário não encontrado");
+                throw new NotFoundException("User not found");
             }
 
             _userRepository.Remove(user);
@@ -96,7 +96,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (user is null)
             {
-                throw new NotFoundException("Usuário não encontrado");
+                throw new NotFoundException("User not found");
             }
 
             return user;
@@ -124,7 +124,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             if (user is null)
             {
-                throw new NotFoundException("Usuário não encontrado");
+                throw new NotFoundException("User not found");
             }
 
             return user;

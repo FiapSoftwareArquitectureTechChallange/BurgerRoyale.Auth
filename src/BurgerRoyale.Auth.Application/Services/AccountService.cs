@@ -39,7 +39,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
                 if (!BC.Verify(request.Password, user.PasswordHash))
                 {
-                    throw new UnauthorizedAccessException("Credenciais incorretas");
+                    throw new UnauthorizedAccessException("Incorrect credentials");
                 }
 
                 UserDTO userDto = user.AsDto();
@@ -49,7 +49,7 @@ namespace BurgerRoyale.Auth.Application.Services
             }
             catch (Exception)
             {
-                throw new UnauthorizedAccessException("Usuário não autorizado");
+                throw new UnauthorizedAccessException("User not authorized");
             }
         }
 
@@ -57,7 +57,7 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             if (request.Password != request.PasswordConfirmation)
             {
-                throw new DomainException("Senhas não correspondem");
+                throw new DomainException("Wrong passwords");
             }
 
             return await _userService.CreateAsync(
@@ -75,14 +75,14 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             if (request.NewPassword != request.NewPasswordConfirmation)
             {
-                throw new DomainException("Senhas não correspondem");
+                throw new DomainException("Wrong passwords");
             }
 
             var user = await _userService.GetByIdAsync(userId);
 
             if (!BC.Verify(request.CurrentPassword, user.PasswordHash))
             {
-                throw new UnauthorizedAccessException("Senha atual incorreta");
+                throw new UnauthorizedAccessException("Current password incorrect");
             }
 
             return await _userService.UpdateAsync(

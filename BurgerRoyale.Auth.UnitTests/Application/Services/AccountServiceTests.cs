@@ -59,7 +59,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<UnauthorizedAccessException>()
-                .WithMessage("Usuário não autorizado");
+                .WithMessage("User not authorized");
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<UnauthorizedAccessException>()
-                .WithMessage("Usuário não autorizado");
+                .WithMessage("User not authorized");
         }
 
         [Theory]
@@ -154,7 +154,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<DomainException>()
-                .WithMessage("Senhas não correspondem");
+                .WithMessage("Wrong passwords");
         }
 
         [Fact]
@@ -217,7 +217,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<DomainException>()
-                .WithMessage("Senhas não correspondem");
+                .WithMessage("Wrong passwords");
         }
 
         [Fact]
@@ -244,7 +244,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             await task.Should()
                 .ThrowAsync<UnauthorizedAccessException>()
-                .WithMessage("Senha atual incorreta");
+                .WithMessage("Current password incorrect");
         }
 
         [Fact]

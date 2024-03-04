@@ -14,28 +14,28 @@ namespace BurgerRoyale.Auth.Domain.Validators
                     .NotNull()
                     .NotEmpty()
                     .Must(x => CpfHelper.IsValid(x))
-                    .WithMessage("Informe um CPF válido");
+                    .WithMessage("Inform a valid CPF");
 
                 RuleFor(r => r.Name)
                     .NotNull()
                     .NotEmpty()
-                    .WithMessage("Informe um nome");
+                    .WithMessage("Inform a name");
 
                 RuleFor(r => r.Email)
                     .NotNull()
                     .NotEmpty()
                     .EmailAddress()
-                    .WithMessage("Informe um e-mail válido");
+                    .WithMessage("Inform a valid e-mail");
 
                 RuleFor(r => r.PasswordHash)
                     .NotNull()
                     .NotEmpty()
-                    .WithMessage("Informe uma senha");
+                    .WithMessage("Inform a password");
 
                 RuleFor(r => r.UserRole)
                     .NotNull()
                     .NotEmpty()
-                    .WithMessage("Informe um tipo de usuário");
+                    .WithMessage("Inform an user role");
             });
         }
     }
