@@ -41,7 +41,7 @@ namespace BurgerRoyale.Auth.Application.Services
                     throw new UnauthorizedAccessException("Credenciais incorretas");
                 }
 
-                UserDTO userDto = new UserDTO(user);
+                UserDTO userDto = user.AsDto();
                 string token = GenerateJwtToken(user);
 
                 return new AuthenticationResponseDTO(userDto, token);

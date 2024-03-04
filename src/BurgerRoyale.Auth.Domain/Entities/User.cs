@@ -1,4 +1,5 @@
-﻿using BurgerRoyale.Auth.Domain.Enumerators;
+﻿using BurgerRoyale.Auth.Domain.DTO;
+using BurgerRoyale.Auth.Domain.Enumerators;
 using BurgerRoyale.Auth.Domain.Helpers;
 using BurgerRoyale.Auth.Domain.Validators;
 
@@ -31,6 +32,11 @@ namespace BurgerRoyale.Auth.Domain.Entities
             UserRole = userRole;
 
             ValidateEntity();
+        }
+
+        public UserDTO AsDto()
+        {
+            return new UserDTO(this);
         }
 
         private void ValidateEntity()

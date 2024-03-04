@@ -48,7 +48,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             await _userRepository.AddAsync(user);
 
-            return new UserDTO(user);
+            return user.AsDto();
         }
 
         public async Task<UserDTO> UpdateAsync(Guid userId, RequestUserDTO model)
@@ -73,7 +73,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
             await _userRepository.UpdateAsync(user);
 
-            return new UserDTO(user);
+            return user.AsDto();
         }
 
         public async Task DeleteAsync(Guid userId)
@@ -101,7 +101,7 @@ namespace BurgerRoyale.Auth.Application.Services
                 ? await _userRepository.GetAllAsync()
                 : await _userRepository.FindAsync(x => x.UserRole == userType);
 
-            return users.Select(user => new UserDTO(user));
+            return users.Select(user => user.AsDto());
         }
 
         private static UserDTO GetUser(User? user)
@@ -111,7 +111,7 @@ namespace BurgerRoyale.Auth.Application.Services
                 throw new NotFoundException("Usuário não encontrado");
             }
 
-            return new UserDTO(user);
+            return user.AsDto();
         }
     }
 }

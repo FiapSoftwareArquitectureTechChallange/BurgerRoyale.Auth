@@ -46,7 +46,7 @@ public class UserControllerTests
     {
         // arrange
         var user = UserMock.Get();
-        var userDto = new UserDTO(user);
+        var userDto = user.AsDto();
 
         _userService
             .Setup(x => x.GetByIdAsync(user.Id))
@@ -75,7 +75,7 @@ public class UserControllerTests
             user.UserRole
         );
 
-        var userDto = new UserDTO(user);
+        var userDto = user.AsDto();
 
         _userService
             .Setup(x => x.CreateAsync(requestUser))
@@ -104,7 +104,7 @@ public class UserControllerTests
             user.UserRole
         );
 
-        var userDto = new UserDTO(user);
+        var userDto = user.AsDto();
 
         _userService
             .Setup(x => x.UpdateAsync(user.Id, requestUser))

@@ -121,7 +121,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
 
             // assert
             response.AccessToken.Should().NotBeNullOrEmpty();
-            response.User.Should().BeEquivalentTo(new UserDTO(user));
+            response.User.Should().BeEquivalentTo(user.AsDto());
         }
     }
 }

@@ -38,7 +38,7 @@ namespace BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks
         )
         {
             return GetList(quantity, userRole)
-                .Select(user => new UserDTO(user))
+                .Select(user => user.AsDto())
                 .ToList();
         }
 
