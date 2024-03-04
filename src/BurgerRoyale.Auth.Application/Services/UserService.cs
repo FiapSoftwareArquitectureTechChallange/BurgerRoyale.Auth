@@ -49,7 +49,7 @@ namespace BurgerRoyale.Auth.Application.Services
                 model.Name,
                 model.Email,                
                 BC.HashPassword(model.Password),
-                model.UserType
+                model.UserRole
             );
 
             await _userRepository.AddAsync(user);
@@ -70,7 +70,7 @@ namespace BurgerRoyale.Auth.Application.Services
                 model.Name,
                 model.Email,
                 BC.HashPassword(model.Password),
-                model.UserType
+                model.UserRole
             );
 
             await _userRepository.UpdateAsync(user);

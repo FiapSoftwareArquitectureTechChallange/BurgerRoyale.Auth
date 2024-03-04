@@ -1,6 +1,8 @@
 ﻿using BurgerRoyale.Auth.Domain.Configurations;
 using BurgerRoyale.Auth.Domain.DTO;
 using BurgerRoyale.Auth.Domain.Entities;
+using BurgerRoyale.Auth.Domain.Enumerators;
+using BurgerRoyale.Auth.Domain.Exceptions;
 using BurgerRoyale.Auth.Domain.Helpers;
 using BurgerRoyale.Auth.Domain.Interface.Services;
 using Microsoft.Extensions.Options;
@@ -49,6 +51,24 @@ namespace BurgerRoyale.Auth.Application.Services
             {
                 throw new UnauthorizedAccessException("Usuário não autorizado");
             }
+        }
+
+        public async Task<UserDTO> RegisterCustomer(UserRegisterRequestDTO request)
+        {
+            if (request.Password != request.PasswordConfirmation)
+            {
+                throw new DomainException("Senhas não correspondem");
+            }
+
+            return await _userService.CreateAsync(
+                new UserCreateRequestDTO(
+                    request.Cpf,
+                    request.Name,
+                    request.Email,
+                    request.Password,
+                    UserRole.Customer
+                )
+            );
         }
 
         private string GenerateJwtToken(User user)

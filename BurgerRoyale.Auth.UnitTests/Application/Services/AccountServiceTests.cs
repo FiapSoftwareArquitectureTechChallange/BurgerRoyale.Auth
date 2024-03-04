@@ -5,6 +5,7 @@ using BurgerRoyale.Auth.Domain.Entities;
 using BurgerRoyale.Auth.Domain.Enumerators;
 using BurgerRoyale.Auth.Domain.Exceptions;
 using BurgerRoyale.Auth.Domain.Interface.Services;
+using BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks;
 using Microsoft.Extensions.Options;
 using BC = BCrypt.Net.BCrypt;
 
@@ -135,6 +136,69 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             response.AccessToken.Should().NotBeNullOrEmpty();
             response.User.Should().BeEquivalentTo(user.AsDto());
+        }
+
+        [Fact]
+        public async Task GivenUserRegisterRequest_WhenPasswordDoesNotMatchWithConfirmation_ThenShouldThrowDomainException()
+        {
+            // arrange
+            var request = new UserRegisterRequestDTO(
+                "12345678910",
+                "Name",
+                "email@test.com",
+                "password",
+                "wrong_password_confirmation"
+            );
+
+            // act
+            Func<Task> task = async () => await _accountService.RegisterCustomer(request);
+
+            // assert
+            await task.Should()
+                .ThrowAsync<DomainException>()
+                .WithMessage("Senhas não correspondem");
+        }
+
+        [Fact]
+        public async Task GivenUserRegisterRequest_WhenCreateUser_ThenShouldCreateAsCustomer()
+        {
+            // arrange
+            var request = new UserRegisterRequestDTO(
+                "12345678910",
+                "Name",
+                "email@test.com",
+                "password",
+                "password"
+            );
+
+            var userDto = UserMock.Get(
+                request.Cpf,
+                request.Name,
+                request.Email,
+                request.Password,
+                UserRole.Customer
+            ).AsDto();
+
+            _userService
+                .Setup(x => x.CreateAsync(It.IsAny<UserCreateRequestDTO>()))
+                .ReturnsAsync(userDto);
+
+            // act
+            var response = await _accountService.RegisterCustomer(request);
+
+            // assert
+            response.Should().BeEquivalentTo(userDto);
+
+            _userService
+                .Verify(
+                    x => x.CreateAsync(
+                        It.Is<UserCreateRequestDTO>(y => 
+                            y.Cpf == request.Cpf
+                            && y.UserRole == UserRole.Customer
+                        )
+                    ),
+                    Times.Once
+                );
         }
     }
 }

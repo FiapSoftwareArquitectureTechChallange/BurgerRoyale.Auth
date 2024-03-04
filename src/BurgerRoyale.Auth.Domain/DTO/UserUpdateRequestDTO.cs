@@ -7,6 +7,6 @@ namespace BurgerRoyale.Auth.Domain.DTO
         string Name,
         string Email,
         string Password,
-        UserRole UserType
+        UserRole UserRole
     );
 }

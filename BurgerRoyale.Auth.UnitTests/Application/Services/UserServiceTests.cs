@@ -208,7 +208,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
 
             response.Name.Should().Be(request.Name);
             response.Email.Should().Be(request.Email);
-            response.UserType.Should().Be(request.UserType);
+            response.UserRole.Should().Be(request.UserRole);
         }
 
         [Fact]
@@ -285,7 +285,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             response.Cpf.Should().Be(Format.FormatCpf(mockedUser.Cpf));
             response.Name.Should().Be(mockedUser.Name);
             response.Email.Should().Be(mockedUser.Email);
-            response.UserType.Should().Be(mockedUser.UserRole);
+            response.UserRole.Should().Be(mockedUser.UserRole);
         }
 
         [Fact]
@@ -337,7 +337,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             // assert
             response.Should().BeAssignableTo<IEnumerable<UserDTO>>();
             response.Should().HaveCount(3);
-            response.Should().OnlyContain(x => x.UserType == userType);
+            response.Should().OnlyContain(x => x.UserRole == userType);
 
             _userRepository.Verify(
                 x => x.FindAsync(It.IsAny<Expression<Func<User, bool>>>()),
