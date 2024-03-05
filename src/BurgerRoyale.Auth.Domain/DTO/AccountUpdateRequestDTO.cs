@@ -1,6 +1,6 @@
 ﻿namespace BurgerRoyale.Auth.Domain.DTO
 {
-    public record CustomerUpdateRequestDTO
+    public record AccountUpdateRequestDTO
     (
         string Name,
         string Email,

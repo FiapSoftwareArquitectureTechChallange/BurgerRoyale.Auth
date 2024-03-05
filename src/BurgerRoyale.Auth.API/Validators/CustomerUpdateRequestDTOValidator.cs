@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BurgerRoyale.Auth.API.Validators
 {
-    public class CustomerUpdateRequestDTOValidator : AbstractValidator<CustomerUpdateRequestDTO>
+    public class CustomerUpdateRequestDTOValidator : AbstractValidator<AccountUpdateRequestDTO>
     {
         public CustomerUpdateRequestDTOValidator()
         {

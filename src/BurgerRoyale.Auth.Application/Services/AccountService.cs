@@ -71,7 +71,7 @@ namespace BurgerRoyale.Auth.Application.Services
             );
         }
 
-        public async Task<UserDTO> UpdateCustomerAsync(Guid userId, CustomerUpdateRequestDTO request)
+        public async Task<UserDTO> UpdateAccountAsync(Guid userId, AccountUpdateRequestDTO request)
         {
             if (request.NewPassword != request.NewPasswordConfirmation)
             {

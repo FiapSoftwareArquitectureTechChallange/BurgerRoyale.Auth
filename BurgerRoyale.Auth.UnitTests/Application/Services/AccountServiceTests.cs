@@ -200,10 +200,10 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task GivenUpdateCustomerRequest_WhenPasswordDoesNotMatchWithConfirmation_ThenShouldThrowDomainException()
+        public async Task GivenUpdateAccountRequest_WhenPasswordDoesNotMatchWithConfirmation_ThenShouldThrowDomainException()
         {
             // arrange
-            var request = new CustomerUpdateRequestDTO(
+            var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
                 "12345678910",
@@ -212,7 +212,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             );
 
             // act
-            Func<Task> task = async () => await _accountService.UpdateCustomerAsync(Guid.NewGuid(), request);
+            Func<Task> task = async () => await _accountService.UpdateAccountAsync(Guid.NewGuid(), request);
 
             // assert
             await task.Should()
@@ -221,10 +221,10 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task GivenUpdateCustomerRequest_WhenCurrentPasswordDoesNotMatch_ThenShouldThrowUnauthorizedException()
+        public async Task GivenUpdateAccountRequest_WhenCurrentPasswordDoesNotMatch_ThenShouldThrowUnauthorizedException()
         {
             // arrange
-            var request = new CustomerUpdateRequestDTO(
+            var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
                 "current_password",
@@ -239,7 +239,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(user);
 
             // act
-            Func<Task> task = async () => await _accountService.UpdateCustomerAsync(Guid.NewGuid(), request);
+            Func<Task> task = async () => await _accountService.UpdateAccountAsync(Guid.NewGuid(), request);
 
             // assert
             await task.Should()
@@ -248,13 +248,13 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task GivenUpdateCustomerRequest_WhenUserUpdated_ThenShouldReturnDto()
+        public async Task GivenUpdateAccountRequest_WhenUserUpdated_ThenShouldReturnDto()
         {
             // arrange
             var userId = Guid.NewGuid();
             var currentPassword = "current_password";
 
-            var request = new CustomerUpdateRequestDTO(
+            var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
                 currentPassword,
@@ -275,7 +275,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 .ReturnsAsync(user.AsDto());
 
             // act
-            var response = await _accountService.UpdateCustomerAsync(userId, request);
+            var response = await _accountService.UpdateAccountAsync(userId, request);
 
             // assert
             response.Should().BeOfType<UserDTO>();

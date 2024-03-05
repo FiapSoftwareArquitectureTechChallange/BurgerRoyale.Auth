@@ -40,19 +40,19 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
             return StatusCode((int) HttpStatusCode.Created, response);
         }
 
-        [Authorize(Roles = "Customer")]
+        [Authorize]
         [HttpPut("Update/{id:Guid}")]        
-        [SwaggerOperation(Summary = "Uptade customer user", Description = "Update customer user")]
+        [SwaggerOperation(Summary = "Uptade account", Description = "Update account")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> UpdateCustomer
+        public async Task<IActionResult> UpdateAccount
         (
             [FromRoute] Guid id,
-            [FromBody] CustomerUpdateRequestDTO request
+            [FromBody] AccountUpdateRequestDTO request
         )
         {
-            var response = await _accountService.UpdateCustomerAsync(id, request);
+            var response = await _accountService.UpdateAccountAsync(id, request);
             return Ok(response);
         }
     }
