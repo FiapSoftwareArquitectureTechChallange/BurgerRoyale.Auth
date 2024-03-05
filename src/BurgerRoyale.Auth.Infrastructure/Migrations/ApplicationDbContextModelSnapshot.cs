@@ -58,6 +58,18 @@ namespace BurgerRoyale.Auth.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e36728b8-95dd-4e78-9626-666c37eacfe2"),
+                            Cpf = "00000000000",
+                            CreatedAt = new DateTime(2024, 3, 5, 1, 10, 21, 168, DateTimeKind.Utc).AddTicks(2822),
+                            Email = "admin@burgerroyale.com",
+                            Name = "Admin",
+                            PasswordHash = "$2a$11$Hm3GUkwCnSTCFwqT1ntowe/C/rvm2lery.SP3tUVe0.qdMyknR5PG",
+                            UserRole = 0
+                        });
                 });
 #pragma warning restore 612, 618
         }

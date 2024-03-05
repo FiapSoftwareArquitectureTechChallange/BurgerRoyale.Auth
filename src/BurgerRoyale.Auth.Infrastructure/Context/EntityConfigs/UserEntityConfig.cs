@@ -1,4 +1,5 @@
 ﻿using BurgerRoyale.Auth.Domain.Entities;
+using BurgerRoyale.Auth.Domain.Enumerators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Diagnostics.CodeAnalysis;
@@ -30,6 +31,16 @@ namespace BurgerRoyale.Auth.Infrastructure.Context.EntityConfigs
 
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
+
+            builder.HasData(
+                new User(
+                    "00000000000",
+                    "Admin",
+                    "admin@burgerroyale.com",
+                    "$2a$11$Hm3GUkwCnSTCFwqT1ntowe/C/rvm2lery.SP3tUVe0.qdMyknR5PG",
+                    UserRole.Admin
+                )
+            );
         }
     }
 }

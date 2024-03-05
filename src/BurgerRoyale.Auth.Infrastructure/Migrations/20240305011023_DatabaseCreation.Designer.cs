@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BurgerRoyale.Auth.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240226013838_DatabaseCreation")]
+    [Migration("20240305011023_DatabaseCreation")]
     partial class DatabaseCreation
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace BurgerRoyale.Auth.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -55,12 +55,24 @@ namespace BurgerRoyale.Auth.Infrastructure.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserType")
+                    b.Property<int>("UserRole")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e36728b8-95dd-4e78-9626-666c37eacfe2"),
+                            Cpf = "00000000000",
+                            CreatedAt = new DateTime(2024, 3, 5, 1, 10, 21, 168, DateTimeKind.Utc).AddTicks(2822),
+                            Email = "admin@burgerroyale.com",
+                            Name = "Admin",
+                            PasswordHash = "$2a$11$Hm3GUkwCnSTCFwqT1ntowe/C/rvm2lery.SP3tUVe0.qdMyknR5PG",
+                            UserRole = 0
+                        });
                 });
 #pragma warning restore 612, 618
         }
