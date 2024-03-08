@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BurgerRoyale.Auth.API\BurgerRoyale.Auth.API.csproj" />
-    <ProjectReference Include="..\src\BurgerRoyale.Auth.Application\BurgerRoyale.Auth.Application.csproj" />
-    <ProjectReference Include="..\src\BurgerRoyale.Auth.Domain\BurgerRoyale.Auth.Domain.csproj" />
-    <ProjectReference Include="..\src\BurgerRoyale.Auth.Infrastructure\BurgerRoyale.Auth.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\BurgerRoyale.Auth.API\BurgerRoyale.Auth.API.csproj" />
+    <ProjectReference Include="..\..\src\BurgerRoyale.Auth.Application\BurgerRoyale.Auth.Application.csproj" />
+    <ProjectReference Include="..\..\src\BurgerRoyale.Auth.Domain\BurgerRoyale.Auth.Domain.csproj" />
+    <ProjectReference Include="..\..\src\BurgerRoyale.Auth.Infrastructure\BurgerRoyale.Auth.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
