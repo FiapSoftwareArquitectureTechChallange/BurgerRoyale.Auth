@@ -26,4 +26,17 @@ jobs:
       run: dotnet build --no-restore
       
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        dotnet test --no-build --verbosity normal
+        echo github.event_name
+
+ # publish:
+#    if: github.event_name != 
+ #   name: Build Docker image
+#    runs-on: ubuntu-latest
+
+#    steps:
+#      - name: Build, tag, and push image to Amazon ECR
+ #       run: |
+  #        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/Dockerfile .
+ #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
