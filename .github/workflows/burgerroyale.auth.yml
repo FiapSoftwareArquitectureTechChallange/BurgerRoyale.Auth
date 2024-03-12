@@ -48,11 +48,14 @@ jobs:
 
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1   
+        uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f ./Dockerfile .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Build Docker Image
+        run: docker build -t burgerroyaleauth .
+
+      #- name: Build, tag, and push image to Amazon ECR
+      #  env:
+      #    ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #  run: |
+      #    docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -f ./Dockerfile .
+      #    docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
