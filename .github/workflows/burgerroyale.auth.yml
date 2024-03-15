@@ -67,7 +67,7 @@ jobs:
         run: docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
         
   updateLambda:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && inputs.updateLambda == true
     name: Update lambda function
     runs-on: ubuntu-latest
     needs: publishImage
