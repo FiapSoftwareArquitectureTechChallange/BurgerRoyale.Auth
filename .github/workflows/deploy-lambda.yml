@@ -1,22 +1,26 @@
-name: BurgerRoyale Auth - Publish Image
+name: BurgerRoyale Auth - Deploy Lambda
 
 on:
-  workflow_dispatch:
-  workflow_call: 
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.github/workflows/**'
 
 env:
   ECR_REPOSITORY: burgerroyaleauth
   LAMBDA_FUNCTION_NAME: burgerroyaleauth-lambda
 
 jobs:
-  build:
-    name: Build and Test
-    uses: FiapSoftwareArquitectureTechChallange/BurgerRoyale.Auth/.github/workflows/build-and-test.yml@main
-
   publishImage:
     name: Publish Docker image
+    uses: FiapSoftwareArquitectureTechChallange/BurgerRoyale.Auth/.github/workflows/publish-image.yml@main
+        
+  updateLambda:
+    name: Update lambda function
     runs-on: ubuntu-latest
-    needs: build
+    needs: publishImage
 
     steps:    
       - name: Checkout code
@@ -34,11 +38,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker Image
-        run: docker build -t $ECR_REPOSITORY .
-
-      - name: Tag Docker Image
-        run: docker tag $ECR_REPOSITORY:latest ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
-
-      - name: Push Docker Image to ECR
-        run: docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
+      - name: Update lambda function code
+        run: |
+          aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --image-uri ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest
