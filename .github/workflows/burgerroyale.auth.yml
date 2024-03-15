@@ -1,10 +1,12 @@
-name: BurgerRoyale.Auth
+name: BurgerRoyale Auth - Deploy Lambda
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main", "develop" ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.github/workflows/**'
 
 env:
   ECR_REPOSITORY: burgerroyaleauth
