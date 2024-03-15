@@ -1,8 +1,8 @@
 name: BurgerRoyale Auth - Publish Image
 
 on:
-  workflow_call: 
   workflow_dispatch:
+  workflow_call: 
 
 env:
   ECR_REPOSITORY: burgerroyaleauth
