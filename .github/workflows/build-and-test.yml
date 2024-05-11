@@ -4,6 +4,11 @@ on:
   workflow_call: 
   pull_request:
     branches: [ "main", "develop" ]
+  push:
+    branches: [ "develop" ]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
 
 jobs:
   build:
