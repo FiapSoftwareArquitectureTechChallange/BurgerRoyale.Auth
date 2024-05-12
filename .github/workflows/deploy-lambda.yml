@@ -16,6 +16,7 @@ jobs:
   build:
     name: Build and Test
     uses: FiapSoftwareArquitectureTechChallange/BurgerRoyale.Auth/.github/workflows/build-and-test.yml@main
+    secrets: inherit
 
   publishImage:
     name: Publish Docker image
