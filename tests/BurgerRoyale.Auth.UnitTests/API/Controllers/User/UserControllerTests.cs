@@ -6,7 +6,7 @@ using BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace BurgerRoyale.Auth.UnitTests.API.User;
+namespace BurgerRoyale.Auth.UnitTests.API.Controllers.User;
 
 public class UserControllerTests
 {
@@ -128,7 +128,7 @@ public class UserControllerTests
         var response = await _controller.DeleteUser(userId) as ObjectResult;
 
         // assert
-        response?.StatusCode.Should().Be((int)HttpStatusCode.NoContent);        
+        response?.StatusCode.Should().Be((int)HttpStatusCode.NoContent);
 
         _userService.Verify(
             x => x.DeleteAsync(userId),
