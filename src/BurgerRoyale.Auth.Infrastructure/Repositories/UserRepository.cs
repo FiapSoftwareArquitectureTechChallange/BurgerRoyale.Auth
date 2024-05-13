@@ -2,13 +2,11 @@
 using BurgerRoyale.Auth.Domain.Interface.Repositories;
 using BurgerRoyale.Auth.Infrastructure.Context;
 using BurgerRoyale.Auth.Infrastructure.RepositoriesStandard;
+using System.Diagnostics.CodeAnalysis;
 
-namespace BurgerRoyale.Auth.Infrastructure.Repositories
+namespace BurgerRoyale.Auth.Infrastructure.Repositories;
+
+[ExcludeFromCodeCoverage]
+public class UserRepository(ApplicationDbContext applicationDbContext) : DomainRepository<User>(applicationDbContext), IUserRepository
 {
-    public class UserRepository : DomainRepository<User>, IUserRepository
-    {
-        public UserRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
-        {
-        }
-    }
 }

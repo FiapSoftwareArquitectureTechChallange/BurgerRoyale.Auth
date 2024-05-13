@@ -1,41 +1,42 @@
 ﻿using BurgerRoyale.Auth.Domain.Interface.RepositoriesStandard;
 using BurgerRoyale.Auth.Infrastructure.Context;
+using System.Diagnostics.CodeAnalysis;
 
-namespace BurgerRoyale.Auth.Infrastructure.RepositoriesStandard
+namespace BurgerRoyale.Auth.Infrastructure.RepositoriesStandard;
+
+[ExcludeFromCodeCoverage]
+public abstract class DomainRepository<TEntity> : Repository<TEntity>,
+                                                  IDomainRepository<TEntity> where TEntity : class
 {
-    public abstract class DomainRepository<TEntity> : Repository<TEntity>,
-                                                      IDomainRepository<TEntity> where TEntity : class
+
+    private bool _disposed = false;
+
+    protected DomainRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
     {
+    }
 
-        private bool _disposed = false;
 
-        protected DomainRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
         {
-        }
-
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-
-                _disposed = true;
+                _context.Dispose();
             }
-        }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _disposed = true;
         }
+    }
 
-        ~DomainRepository()
-        {
-            Dispose(false);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~DomainRepository()
+    {
+        Dispose(false);
     }
 }
