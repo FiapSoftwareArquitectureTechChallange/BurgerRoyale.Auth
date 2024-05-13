@@ -17,11 +17,6 @@ namespace BurgerRoyale.Auth.IOC.Configurations
             IConfiguration configuration
         )
         {
-            services.Configure<JwtConfiguration>
-            (
-                options => configuration.GetSection("Jwt").Bind(options)
-            );
-
             var jwtConfig = configuration
                 .GetSection("Jwt")
                 .Get<JwtConfiguration>();
@@ -44,7 +39,7 @@ namespace BurgerRoyale.Auth.IOC.Configurations
                         ValidIssuer = jwtConfig?.Issuer,
                         ValidAudience = jwtConfig?.Audience,
                         ClockSkew = TimeSpan.Zero,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.SecretKey!))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig?.SecretKey!))
                     };
                 });
         }

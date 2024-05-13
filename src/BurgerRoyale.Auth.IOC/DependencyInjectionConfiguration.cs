@@ -14,6 +14,7 @@ namespace BurgerRoyale.Auth.IOC
             IConfiguration configuration
         )
         {
+            ConfigureOptions.Register(services, configuration);
             ConfigureDatabase.Register(services, configuration);
             ConfigureHealthChecks.Register(services);
             ConfigureServices.Register(services);

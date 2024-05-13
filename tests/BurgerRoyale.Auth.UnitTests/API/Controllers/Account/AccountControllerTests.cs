@@ -5,7 +5,7 @@ using BurgerRoyale.Auth.UnitTests.Domain.EntitiesMocks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace BurgerRoyale.Auth.UnitTests.API.Account
+namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
 {
 
     public class AccountControllerTests

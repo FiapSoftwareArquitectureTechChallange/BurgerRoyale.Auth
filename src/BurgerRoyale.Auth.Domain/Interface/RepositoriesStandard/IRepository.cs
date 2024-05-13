@@ -12,7 +12,7 @@ namespace BurgerRoyale.Auth.Domain.Interface.RepositoriesStandard
 
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<TEntity> FindFirstDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity?> FindFirstDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task AddAsync(TEntity entity);
 

@@ -109,11 +109,11 @@ namespace BurgerRoyale.Auth.Application.Services
             return user.AsDto();
         }
 
-        public async Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userType)
+        public async Task<IEnumerable<UserDTO>> GetUsersDtoAsync(UserRole? userRole)
         {
-            var users = (userType == null)
+            var users = (userRole == null)
                 ? await _userRepository.GetAllAsync()
-                : await _userRepository.FindAsync(x => x.UserRole == userType);
+                : await _userRepository.FindAsync(x => x.UserRole == userRole);
 
             return users.Select(user => user.AsDto());
         }
