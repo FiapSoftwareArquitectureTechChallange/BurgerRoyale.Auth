@@ -1,5 +1,4 @@
 ﻿using BurgerRoyale.Auth.Domain.Exceptions;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 
