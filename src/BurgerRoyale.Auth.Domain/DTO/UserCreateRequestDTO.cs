@@ -7,6 +7,8 @@ namespace BurgerRoyale.Auth.Domain.DTO
         string Cpf,
         string Name,
         string Email,
+        string? Phone,
+        string? Address,
         string Password,
         UserRole UserRole
     );

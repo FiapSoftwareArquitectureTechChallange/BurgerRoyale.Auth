@@ -29,7 +29,12 @@ namespace BurgerRoyale.Auth.Infrastructure.Context.EntityConfigs
 				.IsRequired()
 				.HasMaxLength(100);
 
-			builder.Property(x => x.PasswordHash)
+            builder.Property(x => x.Phone)
+                .HasMaxLength(15);
+
+			builder.Property(x => x.Address);
+
+            builder.Property(x => x.PasswordHash)
 				.IsRequired();
 
 			builder.HasData(
@@ -37,21 +42,27 @@ namespace BurgerRoyale.Auth.Infrastructure.Context.EntityConfigs
 					"00000000000",
 					"Admin",
 					"admin@burgerroyale.com",
-					"$2a$11$C99.K9/gfTc0RqR8XYAiu.T3BG/GvWgOt2oggKkyivz9dGpZPwpEy",
+					string.Empty,
+                    string.Empty,
+                    "$2a$11$C99.K9/gfTc0RqR8XYAiu.T3BG/GvWgOt2oggKkyivz9dGpZPwpEy",
 					UserRole.Admin
 				),
 				new User(
 					"11111111111",
 					"Customer",
 					"customer@burgerroyale.com",
-					"$2a$11$mDJa/xLGCCAYzxhDpcmYve8NpaBqMeCMMfVbB9NpGqg/SpaRv3gJq",
+                    string.Empty,
+                    string.Empty,
+                    "$2a$11$mDJa/xLGCCAYzxhDpcmYve8NpaBqMeCMMfVbB9NpGqg/SpaRv3gJq",
 					UserRole.Customer
 				),
 				new User(
 					"22222222222",
 					"Employee",
 					"employee@burgerroyale.com",
-					"$2a$11$hIwenwL9SKoqgwWt0EOQgukwjCDP1tVuij0lMtHk9nGSwnIVbzbM2",
+                    string.Empty,
+                    string.Empty,
+                    "$2a$11$hIwenwL9SKoqgwWt0EOQgukwjCDP1tVuij0lMtHk9nGSwnIVbzbM2",
 					UserRole.Employee
 				)
 			);

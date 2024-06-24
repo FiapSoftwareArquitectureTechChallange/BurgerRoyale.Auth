@@ -65,6 +65,8 @@ namespace BurgerRoyale.Auth.Application.Services
                     request.Cpf,
                     request.Name,
                     request.Email,
+                    request.Phone,
+                    request.Address,
                     request.Password,
                     UserRole.Customer
                 )
@@ -90,6 +92,8 @@ namespace BurgerRoyale.Auth.Application.Services
                 new UserUpdateRequestDTO(
                     request.Name,
                     request.Email,
+                    request.Phone,
+                    request.Address,
                     request.NewPassword,
                     user.UserRole
                 )

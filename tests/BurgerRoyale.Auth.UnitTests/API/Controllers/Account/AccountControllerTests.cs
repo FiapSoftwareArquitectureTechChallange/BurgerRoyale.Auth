@@ -59,6 +59,8 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
                 userDto.Cpf,
                 userDto.Name,
                 userDto.Email,
+                userDto.Phone,
+                userDto.Address,
                 password,
                 password
             );
@@ -86,6 +88,8 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
             var updateRequest = new AccountUpdateRequestDTO(
                 userDto.Name,
                 userDto.Email,
+                userDto.Phone,
+                userDto.Address,
                 password,
                 password,
                 password

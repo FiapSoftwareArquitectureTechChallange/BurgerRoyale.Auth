@@ -71,6 +71,8 @@ public class UserControllerTests
             user.Cpf,
             user.Name,
             user.Email,
+            user.Phone,
+            user.Address,
             user.PasswordHash,
             user.UserRole
         );
@@ -99,6 +101,8 @@ public class UserControllerTests
         var requestUser = new UserUpdateRequestDTO(
             user.Name,
             user.Email,
+            user.Phone,
+            user.Address,
             user.PasswordHash,
             user.UserRole
         );
