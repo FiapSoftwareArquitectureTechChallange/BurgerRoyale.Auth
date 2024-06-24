@@ -5,6 +5,8 @@
         string Cpf,
         string Name,
         string Email,
+        string? Phone,
+        string? Address,
         string Password,
         string PasswordConfirmation
     );

@@ -4,6 +4,8 @@
     (
         string Name,
         string Email,
+        string? Phone,
+        string? Address,
         string CurrentPassword,
         string NewPassword,
         string NewPasswordConfirmation

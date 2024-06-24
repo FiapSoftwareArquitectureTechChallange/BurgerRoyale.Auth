@@ -10,6 +10,8 @@ namespace BurgerRoyale.Auth.Domain.DTO
         public string Cpf { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
         public UserRole UserRole { get; set; }
 
         public string UserRoleDescription
@@ -23,6 +25,8 @@ namespace BurgerRoyale.Auth.Domain.DTO
             Cpf = Format.FormatCpf(user.Cpf);
             Name = user.Name;
             Email = user.Email;
+            Phone = user.Phone ?? string.Empty;
+            Address = user.Address ?? string.Empty;
             UserRole = user.UserRole;
         }
     }

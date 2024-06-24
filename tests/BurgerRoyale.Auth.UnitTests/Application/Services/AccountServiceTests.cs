@@ -73,7 +73,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Name",
                 "email@test.com",
                 "password",
-                UserRole.Admin
+                userRole: UserRole.Admin
             );
 
             var request = new AuthenticationRequestDTO(
@@ -110,6 +110,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "12345678910",
                 "Name",
                 "email@test.com",
+                "phone",
+                "address",
                 password,
                 UserRole.Admin
             );
@@ -144,6 +146,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "12345678910",
                 "Name",
                 "email@test.com",
+                "",
+                "",
                 "password",
                 "wrong_password_confirmation"
             );
@@ -165,6 +169,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "12345678910",
                 "Name",
                 "email@test.com",
+                "",
+                "",
                 "password",
                 "password"
             );
@@ -174,7 +180,7 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 request.Name,
                 request.Email,
                 request.Password,
-                UserRole.Customer
+                userRole:UserRole.Customer
             ).AsDto();
 
             _userService
@@ -206,6 +212,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
+                "",
+                "",
                 "12345678910",
                 "password",
                 "wrong_password_confirmation"
@@ -227,6 +235,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
+                "",
+                "",
                 "current_password",
                 "password",
                 "password"
@@ -257,6 +267,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
             var request = new AccountUpdateRequestDTO(
                 "Name",
                 "email@test.com",
+                "",
+                "",
                 currentPassword,
                 "password",
                 "password"

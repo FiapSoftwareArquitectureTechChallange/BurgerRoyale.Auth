@@ -104,6 +104,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "123.456.789-10",
                 "Name",
                 "email",
+                "phone",
+                "address",
                 "password",
                 UserRole.Customer
             );
@@ -130,6 +132,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "123.456.789-10",
                 "Test Name",
                 "test@email.com",
+                "phone",
+                "address",
                 "password",
                 UserRole.Customer
             );
@@ -158,6 +162,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Name",
                 "email",
                 "password",
+                "phone",
+                "address",
                 UserRole.Customer
             );
 
@@ -179,6 +185,8 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                 "Updated Name",
                 "updated@email.com",
                 "password",
+                "phone",
+                "address",
                 UserRole.Customer
             );
 

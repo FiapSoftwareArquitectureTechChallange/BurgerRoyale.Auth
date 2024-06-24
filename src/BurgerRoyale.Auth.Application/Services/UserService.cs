@@ -47,7 +47,9 @@ namespace BurgerRoyale.Auth.Application.Services
             var user = new User(
                 cpf,
                 model.Name,
-                model.Email,                
+                model.Email,
+                model.Phone,
+                model.Address,
                 BC.HashPassword(model.Password),
                 model.UserRole
             );
@@ -69,6 +71,8 @@ namespace BurgerRoyale.Auth.Application.Services
             user.SetDetails(
                 model.Name,
                 model.Email,
+                model.Phone,
+                model.Address,
                 BC.HashPassword(model.Password),
                 model.UserRole
             );
