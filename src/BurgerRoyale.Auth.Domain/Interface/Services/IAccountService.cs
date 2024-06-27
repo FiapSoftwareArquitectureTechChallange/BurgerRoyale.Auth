@@ -9,5 +9,7 @@ namespace BurgerRoyale.Auth.Domain.Interface.Services
         Task<UserDTO> RegisterCustomerAsync (CustomerRequestDTO request);
 
         Task<UserDTO> UpdateAccountAsync(Guid userId, AccountUpdateRequestDTO request);
+
+        Task UnregisterAsync(Guid userId);
     }
 }

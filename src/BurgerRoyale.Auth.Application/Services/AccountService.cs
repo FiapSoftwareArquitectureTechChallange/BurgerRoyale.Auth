@@ -75,7 +75,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
         public async Task UnregisterAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            await _userService.DeleteAsync(userId);
         }
 
         public async Task<UserDTO> UpdateAccountAsync(Guid userId, AccountUpdateRequestDTO request)
