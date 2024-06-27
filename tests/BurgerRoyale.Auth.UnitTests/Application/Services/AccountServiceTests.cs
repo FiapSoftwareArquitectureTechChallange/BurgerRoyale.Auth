@@ -305,5 +305,26 @@ namespace BurgerRoyale.Auth.UnitTests.Application.Services
                     Times.Once
                 );
         }
+
+        [Fact]
+        public async Task GivenUnregisterRequested_WhenUserUnregistered_ThenUserShouldBeUnregistered()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+
+            _userService
+                .Setup(x => x.DeleteAsync(It.IsAny<Guid>()))
+                .Returns(Task.CompletedTask);
+
+            // act
+            await _accountService.UnregisterAsync(userId);
+
+            // assert
+            _userService
+                .Verify(
+                    x => x.DeleteAsync(userId),
+                    Times.Once
+                );
+        }
     }
 }
