@@ -42,7 +42,7 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
 
         [Authorize]
         [HttpPut("Update/{id:Guid}")]        
-        [SwaggerOperation(Summary = "Uptade account", Description = "Update account")]
+        [SwaggerOperation(Summary = "Update account", Description = "Update account")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
@@ -54,6 +54,19 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
         {
             var response = await _accountService.UpdateAccountAsync(id, request);
             return Ok(response);
+        }
+        
+        [Authorize]
+        [HttpPost("Unregister")]        
+        [SwaggerOperation(Summary = "Unregister account", Description = "Remove and unregister account")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> UnregisterAccount()
+        {
+            await _accountService.UnregisterAsync(Guid.NewGuid());
+
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }
