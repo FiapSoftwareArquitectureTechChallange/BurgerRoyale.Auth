@@ -7,7 +7,6 @@ using System.Net;
 
 namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
 {
-
     public class AccountControllerTests
     {
         private readonly Mock<IAccountService> _accountServiceMock;
@@ -111,6 +110,27 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
             // assert
             response?.StatusCode.Should().Be((int)HttpStatusCode.OK);
             response?.Value.Should().BeEquivalentTo(userDto);
+        }
+        
+        [Fact]
+        public async Task GivenAccountUnregisterRequest_WhenUnregisterAccount_ThenShouldReturnUpdatedUserDto()
+        {
+            // arrange
+            var userId = Guid.NewGuid();
+
+            _authenticatedUserMock
+                .Setup(x => x.Id)
+                .Returns(userId);   
+
+            // act
+            var response = await _accountController.UnregisterAccount() as ObjectResult;
+
+            // assert
+            response?.StatusCode.Should().Be((int)HttpStatusCode.OK);
+
+            _accountServiceMock
+                .Verify(x => x.UnregisterAsync(userId), 
+                Times.Once);
         }
     }
 }
