@@ -17,13 +17,12 @@ namespace BurgerRoyale.Auth.Application.Services
     public class AccountService : IAccountService
     {
         private readonly IUserService _userService;
+
         private readonly JwtConfiguration _jwtConfiguration;
 
-        public AccountService
-        (
+        public AccountService(
             IUserService userService,
-            IOptions<JwtConfiguration> jwtConfiguration
-        )
+            IOptions<JwtConfiguration> jwtConfiguration)
         {
             _userService = userService;
             _jwtConfiguration = jwtConfiguration.Value;
@@ -33,16 +32,12 @@ namespace BurgerRoyale.Auth.Application.Services
         {
             try
             {
-                User user = !string.IsNullOrWhiteSpace(request.Cpf)
-                    ? await _userService.GetByCpfAsync(request.Cpf)
-                    : await _userService.GetByEmailAsync(request.Email ?? string.Empty);
+                User user = await GetUser(request);
 
-                if (!BC.Verify(request.Password, user.PasswordHash))
-                {
-                    throw new UnauthorizedAccessException("Incorrect credentials");
-                }
+                ValidateUserLogin(request, user);
 
                 UserDTO userDto = user.AsDto();
+
                 string token = GenerateJwtToken(user);
 
                 return new AuthenticationResponseDTO(userDto, token);
@@ -53,23 +48,54 @@ namespace BurgerRoyale.Auth.Application.Services
             }
         }
 
+        private async Task<User> GetUser(AuthenticationRequestDTO request)
+        {
+            if (!string.IsNullOrWhiteSpace(request.Cpf))
+                return await _userService.GetByCpfAsync(request.Cpf);
+
+            return await _userService.GetByEmailAsync(request.Email ?? string.Empty);
+        }
+
+        private static void ValidateUserLogin(AuthenticationRequestDTO request, User user)
+        {
+            if (!BC.Verify(request.Password, user.PasswordHash))
+            {
+                throw new UnauthorizedAccessException("Incorrect credentials");
+            }
+        }
+
         public async Task<UserDTO> RegisterCustomerAsync(CustomerRequestDTO request)
         {
-            if (request.Password != request.PasswordConfirmation)
+            EnsurePasswordsMatch(request.Password, request.PasswordConfirmation);
+
+            return await RegisterCustomer(request);
+        }
+
+        private static void EnsurePasswordsMatch(string password, string passwordConfirmation)
+        {
+            if (password != passwordConfirmation)
             {
                 throw new DomainException("Wrong passwords");
             }
+        }
 
-            return await _userService.CreateAsync(
-                new UserCreateRequestDTO(
-                    request.Cpf,
-                    request.Name,
-                    request.Email,
-                    request.Phone,
-                    request.Address,
-                    request.Password,
-                    UserRole.Customer
-                )
+        private async Task<UserDTO> RegisterCustomer(CustomerRequestDTO request)
+        {
+            UserCreateRequestDTO user = CreateUserDTO(request);
+
+            return await _userService.CreateAsync(user);
+        }
+
+        private static UserCreateRequestDTO CreateUserDTO(CustomerRequestDTO request)
+        {
+            return new UserCreateRequestDTO(
+                request.Cpf,
+                request.Name,
+                request.Email,
+                request.Phone,
+                request.Address,
+                request.Password,
+                UserRole.Customer
             );
         }
 
@@ -80,10 +106,7 @@ namespace BurgerRoyale.Auth.Application.Services
 
         public async Task<UserDTO> UpdateAccountAsync(Guid userId, AccountUpdateRequestDTO request)
         {
-            if (request.NewPassword != request.NewPasswordConfirmation)
-            {
-                throw new DomainException("Wrong passwords");
-            }
+            EnsurePasswordsMatch(request.NewPassword, request.NewPasswordConfirmation);
 
             var user = await _userService.GetByIdAsync(userId);
 
@@ -92,41 +115,64 @@ namespace BurgerRoyale.Auth.Application.Services
                 throw new UnauthorizedAccessException("Current password incorrect");
             }
 
-            return await _userService.UpdateAsync(
-                userId,
-                new UserUpdateRequestDTO(
+            UserUpdateRequestDTO updateUserDTO = CreateUserUpdateRequest(request, user);
+
+            return await _userService.UpdateAsync(userId, updateUserDTO);
+        }
+
+        private static UserUpdateRequestDTO CreateUserUpdateRequest(AccountUpdateRequestDTO request, User user)
+        {
+            return new UserUpdateRequestDTO(
                     request.Name,
                     request.Email,
                     request.Phone,
                     request.Address,
                     request.NewPassword,
                     user.UserRole
-                )
             );
         }
 
         private string GenerateJwtToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey
-            (
+            SymmetricSecurityKey securityKey = CreateSecurityKey();
+
+            SigningCredentials credentials = CreateCredentials(securityKey);
+
+            Claim[] claims = CreateClaims(user);
+
+            JwtSecurityToken securityToken = CreateSecurityToken(credentials, claims);
+
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+        }
+
+        private SymmetricSecurityKey CreateSecurityKey()
+        {
+            return new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtConfiguration.SecretKey!)
             );
+        }
 
-            var credentials = new SigningCredentials
-            (
+        private static SigningCredentials CreateCredentials(SymmetricSecurityKey securityKey)
+        {
+            return new SigningCredentials(
                 securityKey,
                 SecurityAlgorithms.HmacSha256
             );
+        }
 
-            var claims = new []
-            {
+        private static Claim[] CreateClaims(User user)
+        {
+            return [
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.UserRole.GetDescription())
-            };
+            ];
+        }
 
-            var securityToken = new JwtSecurityToken
+        private JwtSecurityToken CreateSecurityToken(SigningCredentials credentials, Claim[] claims)
+        {
+            return new JwtSecurityToken
             (
                 _jwtConfiguration.Issuer,
                 _jwtConfiguration.Audience,
@@ -134,8 +180,6 @@ namespace BurgerRoyale.Auth.Application.Services
                 expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: credentials
             );
-
-            return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
     }
 }
