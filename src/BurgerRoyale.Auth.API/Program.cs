@@ -1,4 +1,6 @@
 using BurgerRoyale.Auth.API.Middleware;
+using BurgerRoyale.Auth.API.Services;
+using BurgerRoyale.Auth.Domain.Interface.Services;
 using BurgerRoyale.Auth.IOC;
 using BurgerRoyale.Auth.IOC.Configurations;
 using FluentValidation;
@@ -67,6 +69,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 DependencyInjectionConfiguration.Register(builder.Services, builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
 
 var app = builder.Build();
 

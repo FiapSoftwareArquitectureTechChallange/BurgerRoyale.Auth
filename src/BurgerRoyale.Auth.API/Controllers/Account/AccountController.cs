@@ -9,15 +9,10 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(
+        IAccountService accountService, 
+        IAuthenticatedUser authenticatedUser) : ControllerBase
     {
-        private readonly IAccountService _accountService;
-
-        public AccountController(IAccountService accountService)
-        {
-            _accountService = accountService;
-        }
-
         [HttpPost("Login")]
         [SwaggerOperation(Summary = "User login", Description = "Authenticate user and return access token.")]
         [ProducesResponseType(typeof(AuthenticationResponseDTO), StatusCodes.Status200OK)]
@@ -25,7 +20,7 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequestDTO request)
         {
-            var response = await _accountService.Authenticate(request);
+            var response = await accountService.Authenticate(request);
             return Ok(response);
         }
 
@@ -36,7 +31,7 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
         [ProducesDefaultResponseType]
         public async Task<IActionResult> RegisterCustomer([FromBody] CustomerRequestDTO request)
         {
-            var response = await _accountService.RegisterCustomerAsync(request);
+            var response = await accountService.RegisterCustomerAsync(request);
             return StatusCode((int) HttpStatusCode.Created, response);
         }
 
@@ -52,7 +47,7 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
             [FromBody] AccountUpdateRequestDTO request
         )
         {
-            var response = await _accountService.UpdateAccountAsync(id, request);
+            var response = await accountService.UpdateAccountAsync(id, request);
             return Ok(response);
         }
         
@@ -64,7 +59,9 @@ namespace BurgerRoyale.Auth.API.Controllers.Account
         [ProducesDefaultResponseType]
         public async Task<IActionResult> UnregisterAccount()
         {
-            await _accountService.UnregisterAsync(Guid.NewGuid());
+            Guid authenticatedUserId = authenticatedUser.Id;
+
+            await accountService.UnregisterAsync(authenticatedUserId);
 
             return StatusCode(StatusCodes.Status200OK);
         }
