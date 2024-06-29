@@ -10,15 +10,21 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
 
     public class AccountControllerTests
     {
-        private readonly Mock<IAccountService> _accountService;
-
+        private readonly Mock<IAccountService> _accountServiceMock;
+        
+        private readonly Mock<IAuthenticatedUser> _authenticatedUserMock;
+        
         private readonly AccountController _accountController;
 
         public AccountControllerTests()
         {
-            _accountService = new Mock<IAccountService>();
+            _accountServiceMock = new Mock<IAccountService>();
 
-            _accountController = new AccountController(_accountService.Object);
+            _authenticatedUserMock = new Mock<IAuthenticatedUser>();
+
+            _accountController = new AccountController(
+                _accountServiceMock.Object,
+                _authenticatedUserMock.Object);
         }
 
         [Fact]
@@ -30,7 +36,7 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
 
             var authenticationRequest = new AuthenticationRequestDTO(null, "email@test.com", "password");
 
-            _accountService
+            _accountServiceMock
                 .Setup(x => x.Authenticate(authenticationRequest))
                 .ReturnsAsync(new AuthenticationResponseDTO(
                     userDto,
@@ -65,7 +71,7 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
                 password
             );
 
-            _accountService
+            _accountServiceMock
                 .Setup(x => x.RegisterCustomerAsync(customerRequest))
                 .ReturnsAsync(userDto);
 
@@ -95,7 +101,7 @@ namespace BurgerRoyale.Auth.UnitTests.API.Controllers.Account
                 password
             );
 
-            _accountService
+            _accountServiceMock
                 .Setup(x => x.UpdateAccountAsync(userDto.Id, updateRequest))
                 .ReturnsAsync(userDto);
 
