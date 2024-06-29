@@ -1,8 +1,8 @@
-﻿using BurgerRoyale.Auth.API.Services;
+﻿using BurgerRoyale.Auth.Application.Services;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace BurgerRoyale.Auth.UnitTests.API.Services;
+namespace BurgerRoyale.Auth.UnitTests.Application.Services;
 
 public class AuthenticatedUserShould
 {
@@ -17,10 +17,10 @@ public class AuthenticatedUserShould
 
         var claim = new Claim(ClaimTypes.NameIdentifier, userId.ToString());
 
-        var identity = new ClaimsIdentity([ claim ]);
+        var identity = new ClaimsIdentity([claim]);
 
         var claimPrincipal = new ClaimsPrincipal(identity);
-        
+
         httpContextAccessorMock
             .Setup(hca => hca.HttpContext!.User)
             .Returns(claimPrincipal);

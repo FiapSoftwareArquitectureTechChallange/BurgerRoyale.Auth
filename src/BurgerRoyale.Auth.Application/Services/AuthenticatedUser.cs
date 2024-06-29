@@ -1,7 +1,8 @@
 ﻿using BurgerRoyale.Auth.Domain.Interface.Services;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace BurgerRoyale.Auth.API.Services;
+namespace BurgerRoyale.Auth.Application.Services;
 
 public class AuthenticatedUser(IHttpContextAccessor httpContextAccessor) : IAuthenticatedUser
 {
