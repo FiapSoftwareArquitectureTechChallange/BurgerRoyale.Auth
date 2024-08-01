@@ -1,81 +1,47 @@
-# BurgerRoyale Auth
-# API de Autenticação em .NET 8
+# BurgerRoyale.Auth
 
 Esta é uma API de autenticação desenvolvida em .NET 8 que fornece endpoints para gerenciar contas de usuário e operações relacionadas.
 
-## Endpoints
+## Tecnologias Utilizadas
 
-### Account
+- **Linguagem:** C#
+- **Framework:** ASP.NET Core
+- **Banco de Dados:** SQL Server
 
-- **POST /api/account/login**
-  - Endpoint para login de usuários.
-  - Parâmetros:
-    - `cpf`: string.
-    - `email`: string.
-    - `password`: string.
-  - Retorna um token de acesso válido se as credenciais forem válidas.
+## Configuração do Ambiente
 
-- **POST /api/account/register**
-  - Endpoint para registrar novos usuários.
-  - Parâmetros:
-    - `cpf`: string.
-    - `name`: string.
-    - `email`: string.
-    - `password`: string.
-    - `passwordConfirmation`: string.
-  - Retorna o usuário criado com seu ID.
+Para configurar o ambiente de desenvolvimento, siga os passos abaixo:
 
-- **PUT /api/account/update**
-  - Endpoint para atualizar os detalhes da conta do usuário.
-  - Requer autenticação.
-  - Parâmetros:
-    - `name`: string.
-    - `email`: string.
-    - `currentPassword`: string.
-    - `newPassword`: string.
-    - `newPasswordConfirmation`: string.
-  - Retorna o usuário com seu ID e os novos valores.
+1. **Clone o Repositório:**
 
-### User
+   ```bash
+   git clone https://github.com/FiapSoftwareArquitectureTechChallange/BurgerRoyale.Auth.git
+   ```
 
-- **GET /api/user**
-  - Endpoint para obter todos os usuários.
-  - Requer autenticação.
-  - Parâmetros:
-    - `userType`: int.
-  - Retorna uma lista de todos os usuários cadastrados baseado no filtro de userType.
+2. **Navegue até o Diretório do Projeto:**
 
-- **POST /api/user**
-  - Endpoint para adicionar um novo usuário.
-  - Requer autenticação.
-  - Parâmetros:
-    - `cpf`: string.
-    - `name`: string.
-    - `email`: string.
-    - `password`: string.
-    - `userRole`: int.
-  - Retorna os detalhes do usuário adicionado.
+   ```bash
+   cd BurgerRoyale.Auth
+   ```
 
-- **GET /api/user/{id}**
-  - Endpoint para obter detalhes de um usuário específico pelo ID.
-  - Requer autenticação.
-  - Parâmetros:
-    - `id`: int.
-  - Retorna os detalhes do usuário correspondente ao ID fornecido.
+3. **Restaurar Dependências:**
 
-- **PUT /api/user/{id}**
-  - Endpoint para atualizar os detalhes de um usuário existente.
-  - Requer autenticação.
-  - Parâmetros:
-    - `name`: string.
-    - `email`: string.
-    - `password`: string.
-    - `userRole`: int.
-  - Retorna os detalhes atualizados do usuário.
+   Utilize o `dotnet` CLI para restaurar as dependências do projeto:
 
-- **DELETE /api/user/{id}**
-  - Endpoint para excluir um usuário existente.
-  - Requer autenticação.
-  - Parâmetros:
-    - `id`: int.
-  - Retorna status code 204.
+   ```bash
+   dotnet restore
+   ```
+
+4. **Configurar Variáveis de Ambiente:**
+
+   Crie um arquivo `appsettings.Development.json` na raiz do projeto e adicione as variáveis de ambiente necessárias. Consulte o arquivo `appsettings.json` para ver exemplos de configuração.
+
+## Uso
+
+Para iniciar o serviço, use o seguinte comando:
+
+```bash
+dotnet run
+```
+
+O serviço estará disponível em `http://localhost:5000` (ou a porta configurada).
